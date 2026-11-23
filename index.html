@@ -228,7 +228,7 @@ button{font:inherit;color:inherit;cursor:pointer}
         <div class="zoom" id="range"><span id="zoom-l">Show</span><div class="seg" role="group" aria-labelledby="zoom-l">
           <button type="button" data-r="90" aria-pressed="true">All 90 days</button><button type="button" data-r="30" aria-pressed="false">Last 30 days</button><button type="button" data-r="14" aria-pressed="false">Last 14 days</button>
         </div></div>
-        <button type="button" class="btn" id="toggle" aria-expanded="true" aria-controls="views"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg><span>Collapse</span></button>
+        <button type="button" class="chev" id="toggle" aria-expanded="true" aria-controls="views" aria-label="Collapse timeline" data-tip="Collapse timeline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="transform:rotate(180deg)"><path d="m6 9 6 6 6-6"/></svg></button>
       </div>
     </div>
     <div class="stack" id="views">
@@ -376,7 +376,7 @@ function buildStrip(){
   Object.keys(tot).sort(function(a,b){return tot[b]-tot[a];}).forEach(function(k){var b=el('button','lg-i','<span class="dot"></span>'+ST[k].n+' <b>'+days(tot[k])+'</b>');b.type='button';b.dataset.k=k;b.style.setProperty('--c',ST[k].c);b.setAttribute('aria-pressed','false');b.addEventListener('click',function(){setFocus(S.focus===k?null:k);});$('legend').appendChild(b);});
 }
 function setOpen(o){
-  S.open=o;save();var t=$('toggle');t.setAttribute('aria-expanded',o?'true':'false');t.querySelector('span').textContent=o?'Collapse':'Expand';t.querySelector('svg').style.transform=o?'':'rotate(180deg)';
+  S.open=o;save();var t=$('toggle');t.setAttribute('aria-expanded',o?'true':'false');var tl=o?'Collapse timeline':'Expand timeline';t.setAttribute('aria-label',tl);t.setAttribute('data-tip',tl);t.querySelector('svg').style.transform=o?'rotate(180deg)':'';hideTip();
   setTimeout(stripLabels,0);$('fold-gantt').classList.toggle('shut',!o);$('fold-strip').classList.toggle('shut',o);$('fold-gantt').inert=!o;$('fold-strip').inert=o;$('range').hidden=!o;
   if(o){gantt.classList.remove('grow');void gantt.offsetWidth;gantt.classList.add('grow');setTimeout(layout,0);}
 }
