@@ -65,21 +65,24 @@ button{font:inherit;color:inherit;cursor:pointer}
 .gantt{position:relative;min-width:720px;--lw:164px}
 .axis,.row{display:grid;grid-template-columns:var(--lw) 1fr}
 .axis-t{position:relative;height:28px}
-.tick{position:absolute;top:4px;font-size:11px;color:var(--dp60);padding-left:5px;white-space:nowrap;transition:left .45s var(--ease)}
-.today-l{position:absolute;right:6px;top:4px;font-size:11px;font-weight:600}
+.tick{position:absolute;top:6px;font-size:11px;color:var(--dp80);padding-left:5px;white-space:nowrap;transition:left .45s var(--ease)}
+.today-l{position:absolute;right:6px;top:6px;font-size:11px;font-weight:600}
 .lines{position:absolute;left:var(--lw);right:0;top:24px;bottom:0;pointer-events:none}
 .gl{position:absolute;top:0;bottom:0;border-left:1px dashed var(--dp20);transition:left .45s var(--ease)}
-.row{border-top:1px solid var(--dp10);transition:opacity .25s}
+.row{border-top:1px solid var(--dp10);background:var(--surface);transition:opacity .25s,background .15s}
+.row:hover{background:var(--soft)}
+.row:last-child{border-bottom:1px solid var(--dp10)}
+.axh{display:flex;justify-content:space-between;align-items:center;height:28px;padding-right:16px}
 .gantt.focus .row:not(.on){opacity:.3}
-.rl{display:flex;align-items:center;gap:8px;height:56px;font-size:12px;font-weight:500;background:var(--surface);border:0;padding:0;text-align:left;position:sticky;left:0;z-index:2}
-.row.tall .rl{height:84px;align-items:flex-start;padding-top:20px}
+.rl{display:flex;align-items:center;gap:8px;height:48px;font-size:12px;font-weight:500;background:inherit;border:0;padding:0;text-align:left;position:sticky;left:0;z-index:2}
+.row.tall .rl{height:76px;align-items:flex-start;padding-top:16px}
 .axis>div:first-child{position:sticky;left:0;z-index:2;background:var(--surface)}
 .rl:hover{color:var(--purple)}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--c);flex:none}
 .row.tall .rl .dot{margin-top:5px}
-.track{position:relative;height:56px;overflow:hidden}
-.row.tall .track{height:84px}
-.bar{position:absolute;top:8px;height:40px;border:0;border-radius:20px;background:var(--t);color:var(--x);padding:0;display:flex;align-items:center;justify-content:center;overflow:hidden;transition:left .45s var(--ease),width .45s var(--ease),box-shadow .15s,filter .15s;box-shadow:inset 0 0 0 0 var(--c)}
+.track{position:relative;height:48px;overflow:hidden}
+.row.tall .track{height:76px}
+.bar{position:absolute;top:8px;height:32px;border:0;border-radius:16px;background:var(--t);color:var(--x);padding:0;display:flex;align-items:center;justify-content:center;overflow:hidden;transition:left .45s var(--ease),width .45s var(--ease),box-shadow .15s,filter .15s;box-shadow:inset 0 0 0 0 var(--c)}
 .bar.full{justify-content:flex-start;padding-left:14px}
 .bar:hover{filter:brightness(.96)}
 .bar.sel{box-shadow:inset 0 0 0 2px var(--c)}
@@ -87,16 +90,16 @@ button{font:inherit;color:inherit;cursor:pointer}
 .bar.live.sel{box-shadow:inset 0 0 0 2px rgba(255,255,255,.8)}
 .bar.tiny:not(.live){min-width:8px;background:color-mix(in srgb,var(--c) 45%,#fff)}
 .bar:focus-visible{outline-offset:-2px}
-.bl{display:flex;flex-direction:column;align-items:flex-start;line-height:1.3;white-space:nowrap;text-align:left}
+.bl{display:flex;align-items:baseline;gap:8px;line-height:1.3;white-space:nowrap;text-align:left}
 .bl b{font-size:12px;font-weight:600}
-.bl i{font-style:normal;font-size:10px}
+.bl i{font-style:normal;font-size:11px}
 .bar:not(.full) .bl i,.bar.none .bl{display:none}
-.bar:not(.full) .bl b{font-size:11px}
+
 .grow .bar{animation:grow .55s var(--ease) both;animation-delay:calc(var(--i)*35ms);transform-origin:left center}
 @keyframes grow{from{transform:scaleX(0);opacity:0}to{transform:scaleX(1);opacity:1}}
-.bar.live::after{content:"";position:absolute;inset:0;border-radius:20px;box-shadow:0 0 0 0 rgba(207,24,24,.45);animation:pulse 2.2s ease-out infinite}
+.bar.live::after{content:"";position:absolute;inset:0;border-radius:16px;box-shadow:0 0 0 0 rgba(207,24,24,.45);animation:pulse 2.2s ease-out infinite}
 @keyframes pulse{to{box-shadow:0 0 0 10px rgba(207,24,24,0)}}
-.cz{position:absolute;top:54px;display:flex;gap:3px;transition:left .45s var(--ease)}
+.cz{position:absolute;top:48px;display:flex;gap:3px;transition:left .45s var(--ease)}
 .cz .pb,.cause .pb{background:var(--dp10);color:var(--dp)}
 .cz .pb{width:16px;height:16px;border-radius:4px}
 .cz .pb:hover{background:var(--dp20)}
@@ -104,6 +107,8 @@ button{font:inherit;color:inherit;cursor:pointer}
 .pb{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:5px;border:0;padding:0;color:#fff;font-size:10px;font-weight:700;background:var(--p)}
 .pb.lg{width:32px;height:32px;border-radius:8px;font-size:14px;flex:none}
 .detail{margin-top:16px;border:1px solid var(--dp10);border-radius:8px;background:var(--soft);padding:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px 48px;align-items:start}
+.detail{position:relative}
+.dx{position:absolute;top:10px;right:10px}
 .detail h3{margin:0;font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .detail p{margin:6px 0 0;font-size:12px;color:var(--dp80);max-width:520px}
 .kv{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;font-size:12px;margin:0;font-variant-numeric:tabular-nums}
@@ -125,7 +130,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .sg:focus-visible{outline-offset:-2px}
 .sg:not(.live):hover{background:color-mix(in srgb,var(--c) 40%,#fff)}
 .strip.focus .sg:not(.on){opacity:.2}
-.sax{display:flex;justify-content:space-between;font-size:11px;color:var(--dp60);margin-top:8px}
+.sax{display:flex;justify-content:space-between;font-size:11px;color:var(--dp80);margin-top:8px}
 .legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
 .lg-i{display:inline-flex;align-items:center;gap:6px;font-size:12px;background:var(--surface);border:1px solid var(--dp10);border-radius:100px;padding:4px 12px 4px 10px;transition:background .15s,border-color .15s}
 .lg-i:hover{background:var(--soft)}
@@ -177,11 +182,12 @@ button{font:inherit;color:inherit;cursor:pointer}
 .fb{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s var(--ease)}
 .f.open .fb{grid-template-rows:1fr}
 .fb>div{overflow:hidden;min-height:0}
-.fbi{padding:0 16px 16px 60px;display:flex;flex-direction:column;gap:16px}
+.fbi{margin:0 16px;padding:16px 0 16px 44px;border-top:1px solid var(--dp10);display:flex;flex-direction:column;gap:16px}
 .fbi>p{margin:0}
 .cols{display:flex;gap:48px;flex-wrap:wrap}
 .cols ol{margin:8px 0 0;padding-left:18px;font-size:12px;display:flex;flex-direction:column;gap:8px}
-.side{flex:0 1 340px;display:flex;flex-direction:column;gap:8px;font-size:12px}
+.side{flex:0 1 340px;display:flex;flex-direction:column;gap:16px;font-size:12px}
+.grp{display:flex;flex-direction:column;gap:6px}
 .cc{display:flex;flex-wrap:wrap;gap:6px}
 .cc span{background:var(--blue10);border-radius:4px;padding:4px 10px}
 .win{display:flex;gap:4px;align-items:center}
@@ -196,7 +202,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .toast.on{transform:translate(-50%,0);opacity:1}
 .toast button{background:none;border:0;color:#83BFDC;font-weight:600;padding:0}
 @container (max-width:1040px){.ft{grid-template-columns:minmax(0,1fr)}.fr{grid-template-columns:repeat(3,minmax(0,1fr)) auto 32px;padding:12px 0 0 44px;border-top:1px solid var(--dp10)}}
-@container (max-width:600px){.fr{grid-template-columns:repeat(3,minmax(0,1fr));padding-left:0;gap:12px 16px}.act{grid-column:1 / 3;justify-content:flex-start}.chev{justify-self:end}.fbi{padding-left:16px}}
+@container (max-width:600px){.fr{grid-template-columns:repeat(3,minmax(0,1fr));padding-left:0;gap:12px 16px}.act{grid-column:1 / 3;justify-content:flex-start}.chev{justify-self:end}.fbi{padding-left:0}}
 @media (max-width:640px){.block{padding:16px}.card{padding:16px}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
@@ -310,7 +316,7 @@ var gantt=$('gantt'),order=[];PER.forEach(function(p){if(order.indexOf(p[0])<0)o
 var axisT,lines,bars=[],czs=[];
 function tipFor(p){var n=p[2]-p[1];return '<b>'+ST[p[0]].n+'</b> · '+days(n)+'<br>'+fmt(p[1])+' – '+(p[2]===90?'now':fmt(p[2]));}
 function buildGantt(){
-  var ax=el('div','axis');ax.appendChild(el('div'));axisT=el('div','axis-t');ax.appendChild(axisT);gantt.appendChild(ax);
+  var ax=el('div','axis');ax.appendChild(el('div','axh','<span class="lbl">Status</span><span class="lbl">Days</span>'));axisT=el('div','axis-t');ax.appendChild(axisT);gantt.appendChild(ax);
   lines=el('div','lines');gantt.appendChild(lines);
   var tracks={};
   order.forEach(function(k){
@@ -338,7 +344,7 @@ function layout(){
   axisT.appendChild(el('span','today-l','Today'));
   var tw=bars[0].parentNode.clientWidth||900;
   PER.forEach(function(p,i){var n=p[2]-p[1],l=(p[1]-r0)/R*100,w=n/R*100,b=bars[i];b.style.left='calc('+l+'% + 1px)';b.style.width='calc('+w+'% - 2px)';
-    var vis=Math.min(p[2],90)-Math.max(p[1],r0),px=vis/R*tw;b.classList.toggle('full',px>=104&&p[1]>=r0);b.classList.toggle('none',px<22);b.classList.toggle('tiny',px<14);b.querySelector('b').textContent=(px>=104&&p[1]>=r0)?days(n):n+'d';
+    var vis=Math.min(p[2],90)-Math.max(p[1],r0),px=vis/R*tw;var full=px>=150&&p[1]>=r0;b.classList.toggle('full',full);b.classList.toggle('none',px<22);b.classList.toggle('tiny',px<14);b.querySelector('b').textContent=full?days(n):n+'d';
     b.tabIndex=vis>0?0:-1;
     if(czs[i]){if(p[2]===90){czs[i].style.left='auto';czs[i].style.right='6px';}else czs[i].style.left='calc('+l+'% + 3px)';}});
 }
@@ -352,7 +358,7 @@ function select(i){
   var p=PER[i],k=p[0],n=p[2]-p[1],live=i===PER.length-1,same=PER.filter(function(q){return q[0]===k;}),tot=same.reduce(function(a,q){return a+q[2]-q[1];},0);
   var h='<div class="grow-1"><h3><span class="chip" style="background:'+ST[k].t+';color:'+ST[k].x+'">'+ST[k].n+'</span>'+days(n)+(live?' so far':'')+'</h3><p>'+ST[k].d+'</p><div class="facts"><div class="fact"><span class="lbl">Started</span><b>'+fmt(p[1])+(live?', 18:45':'')+'</b></div><div class="fact"><span class="lbl">Ended</span><b>'+(live?'Still open':fmt(p[2]))+'</b></div><div class="fact"><span class="lbl">'+ST[k].n+' in total</span><b>'+days(tot)+' in '+same.length+(same.length===1?' period':' periods')+'</b></div></div></div>';
   if(p[3]){h+='<div class="cause"><span class="lbl">Caused by</span>'+p[3].map(function(c){return '<span><span class="pb" style="--p:'+PC[c[0]]+'">'+c[0]+'</span>'+c[1]+'</span>';}).join('')+(live?'<button type="button" class="link" id="goto"><svg class="ic" aria-hidden="true"><use href="#i-down"/></svg>Go to open findings</button>':'<span style="color:var(--dp60)">These findings have since closed.</span>')+'</div>';}
-  box.innerHTML=h;fd.classList.remove('shut');
+  box.innerHTML=h+'<button type="button" class="chev dx" id="dclose" aria-label="Close details"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>';fd.classList.remove('shut');$('dclose').addEventListener('click',function(){select(-1);});
   var g=$('goto');if(g)g.addEventListener('click',function(){flash(null);});
 }
 function flash(ph){var first=null;F.forEach(function(f){if(ph&&f.ph!==ph)return;var n=$(f.id);if(!first)first=n;n.classList.add('flash');setTimeout(function(){n.classList.remove('flash');},1800);});
@@ -391,7 +397,7 @@ function buildFindings(){
       '<div class="act"><button type="button" class="btn ackbtn" data-tip="Mark as known. The finding stays in the list.">'+CHK+'<span>Acknowledge</span></button><button type="button" class="link undo">Undo</button></div>'+
       '<button type="button" class="chev" aria-expanded="false" aria-label="Show details"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div></div>'+
       '<div class="fb"><div><div class="fbi"><p>'+f.sum+'</p><div class="cols"><div class="grow-1"><span class="lbl">Where to look</span><ol>'+f.steps.map(function(s){return '<li>'+s+'</li>';}).join('')+'</ol></div>'+
-      '<div class="side"><span class="lbl">Last 8 hourly checks</span><div class="win">'+wins+'</div><span class="lbl">Likely causes</span><div class="cc">'+f.causes.map(function(c){return '<span>'+c+'</span>';}).join('')+'</div><span class="lbl">Destination</span><span>'+f.dest+'</span><span class="lbl">Open since</span><span>'+f.since+'</span></div></div></div></div></div>';
+      '<div class="side"><div class="grp"><span class="lbl">Last 8 hourly checks</span><div class="win">'+wins+'</div></div><div class="grp"><span class="lbl">Likely causes</span><div class="cc">'+f.causes.map(function(c){return '<span>'+c+'</span>';}).join('')+'</div></div><div class="grp"><span class="lbl">Destination</span><span>'+f.dest+'</span></div><div class="grp"><span class="lbl">Open since</span><span>'+f.since+'</span></div></div></div></div></div></div>';
     n.querySelector('.chev').addEventListener('click',function(){var o=n.classList.toggle('open');this.setAttribute('aria-expanded',o?'true':'false');n.querySelector('.fb>div').inert=!o;});
     n.querySelector('.fb>div').inert=true;
     n.querySelector('.ackbtn').addEventListener('click',function(){ack(f,true,true);});
