@@ -158,8 +158,8 @@ button{font:inherit;color:inherit;cursor:pointer}
 .f{border:1px solid var(--dp10);border-radius:8px;background:var(--surface);transition:background .35s,box-shadow .3s}
 .f.ack{background:var(--soft)}
 .f.flash{box-shadow:0 0 0 2px var(--blue)}
-.ft{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:16px 24px;padding:16px}
-.fl{display:flex;align-items:center;gap:12px;min-width:0}
+.ft{display:grid;grid-template-columns:minmax(0,1fr) auto auto;grid-template-areas:"l m a";align-items:center;gap:16px 24px;padding:16px}
+.fl{grid-area:l;display:flex;align-items:center;gap:12px;min-width:0}
 .fx{display:flex;flex-direction:column;gap:4px;min-width:0}
 .ftitle{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:14px;font-weight:600}
 .code{font-size:10px;font-weight:500;background:var(--blue10);color:var(--dp80);border-radius:4px;padding:3px 8px;letter-spacing:.02em}
@@ -168,12 +168,13 @@ button{font:inherit;color:inherit;cursor:pointer}
 .ackchip{display:none}
 .f.ack .ackchip{display:inline-flex;animation:pop .35s var(--ease)}
 @keyframes pop{from{transform:scale(.8);opacity:0}}
-.fr{display:grid;grid-template-columns:repeat(3,104px) 132px 32px;align-items:center;gap:24px}
+.fr{grid-area:m;display:grid;grid-template-columns:repeat(3,104px);align-items:center;gap:24px}
+.fa{grid-area:a;display:flex;align-items:center;gap:12px}
 .m{display:flex;flex-direction:column;gap:2px;min-width:0}
 .m b{font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;transition:color .35s}
 .m b.bad{color:var(--red)}
 .f.ack .m b.bad{color:var(--dp80)}
-.act{display:flex;justify-content:flex-end}
+.act{display:flex;justify-content:flex-end;min-width:124px}
 .f.ack .ackbtn,.f:not(.ack) .undo{display:none}
 .chev{width:32px;height:32px;border:0;background:none;border-radius:8px;display:flex;align-items:center;justify-content:center}
 .chev:hover{background:var(--purple10)}
@@ -201,8 +202,8 @@ button{font:inherit;color:inherit;cursor:pointer}
 .toast{position:fixed;left:50%;bottom:24px;z-index:11;transform:translate(-50%,80px);background:#1D1E26;color:#fff;border-radius:8px;padding:10px 14px;font-size:13px;display:flex;gap:16px;align-items:center;opacity:0;transition:transform .35s var(--ease),opacity .25s}
 .toast.on{transform:translate(-50%,0);opacity:1}
 .toast button{background:none;border:0;color:#83BFDC;font-weight:600;padding:0}
-@container (max-width:1040px){.ft{grid-template-columns:minmax(0,1fr)}.fr{grid-template-columns:repeat(3,minmax(0,1fr)) auto 32px;padding:12px 0 0 44px;border-top:1px solid var(--dp10)}}
-@container (max-width:600px){.fr{grid-template-columns:repeat(3,minmax(0,1fr));padding-left:0;gap:12px 16px}.act{grid-column:1 / 3;justify-content:flex-start}.chev{justify-self:end}.fbi{padding-left:0}}
+@container (max-width:1040px){.ft{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"l a" "m m";align-items:start}.fr{grid-template-columns:repeat(3,minmax(0,1fr));padding:12px 0 0 44px;border-top:1px solid var(--dp10)}}
+@container (max-width:600px){.fr{padding-left:0;gap:12px 16px}.fa{gap:4px}.act{min-width:0}.ackbtn{padding:0 9px}.ackbtn span{display:none}.fbi{padding-left:0}}
 @media (max-width:640px){.block{padding:16px}.card{padding:16px}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
@@ -394,7 +395,7 @@ function buildFindings(){
     var wins=f.win.split('').map(function(c,i){return '<button type="button" class="wq '+c+'" data-tip="<b>Check '+(i+1)+' of 8</b><br>'+WN[c]+'" aria-label="Check '+(i+1)+': '+WN[c]+'"></button>';}).join('');
     n.innerHTML='<div class="ft"><div class="fl"><span class="pb lg" style="--p:'+PC[f.ph]+'" data-tip="Funnel phase '+f.ph+'">'+f.ph+'</span><div class="fx"><div class="ftitle">'+f.title+'<span class="code">'+f.code+'</span></div><div class="meta">'+f.meta+'</div><div class="tags"><span class="chip red"><svg class="ic" aria-hidden="true"><use href="#i-history"/></svg>Breached '+f.streak+' checks in a row</span><span class="chip green ackchip">'+CHK+'<span class="ackt"></span></span></div></div></div>'+
       '<div class="fr"><div class="m"><span class="lbl" data-tip="The most recent 4-hour window that was checked">Last 4 hours</span><b class="bad">'+f.cur+'</b></div><div class="m"><span class="lbl" data-tip="Baseline: the average for the same 4 hours on earlier days of the same type, weekday or weekend">Usual level</span><b>'+f.avg+'</b></div><div class="m"><span class="lbl">Change</span><b class="bad">'+f.chg+'</b></div>'+
-      '<div class="act"><button type="button" class="btn ackbtn" data-tip="Mark as known. The finding stays in the list.">'+CHK+'<span>Acknowledge</span></button><button type="button" class="link undo">Undo</button></div>'+
+      '</div><div class="fa"><div class="act"><button type="button" class="btn ackbtn" aria-label="Acknowledge" data-tip="Mark as known. The finding stays in the list.">'+CHK+'<span>Acknowledge</span></button><button type="button" class="link undo">Undo</button></div>'+
       '<button type="button" class="chev" aria-expanded="false" aria-label="Show details"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div></div>'+
       '<div class="fb"><div><div class="fbi"><p>'+f.sum+'</p><div class="cols"><div class="grow-1"><span class="lbl">Where to look</span><ol>'+f.steps.map(function(s){return '<li>'+s+'</li>';}).join('')+'</ol></div>'+
       '<div class="side"><div class="grp"><span class="lbl">Last 8 hourly checks</span><div class="win">'+wins+'</div></div><div class="grp"><span class="lbl">Likely causes</span><div class="cc">'+f.causes.map(function(c){return '<span>'+c+'</span>';}).join('')+'</div></div><div class="grp"><span class="lbl">Destination</span><span>'+f.dest+'</span></div><div class="grp"><span class="lbl">Open since</span><span>'+f.since+'</span></div></div></div></div></div></div>';
