@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deal Funnels</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:"Kentledge";src:url("fonts/Kentledge-Regular.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Kentledge";src:url("fonts/Kentledge-Medium.woff2") format("woff2");font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:"Kentledge";src:url("fonts/Kentledge-Bold.woff2") format("woff2");font-weight:600 700;font-style:normal;font-display:swap}
+@font-face{font-family:"Kentledge";src:url("fonts/Kentledge-Black.woff2") format("woff2");font-weight:800 900;font-style:normal;font-display:swap}
+:root{
+  /* layout: one white block on a tinted page; header with period control; period band; two funnel cards side by side, each with its reasons panel */
+  --dp:#232951; --dp80:#4F5474; --dp60:#7B7F97; --dp20:#D3D4DC; --dp10:#E9E9ED;
+  --purple:#562E76; --purple10:#EEEAF1; --blue:#3195C5; --blue10:#EAF4F9;
+  --red:#CF1818; --red10:#FAE8E8; --ok:#2B8A37;
+  --bg:#F3F4F9; --surface:#FFFFFF; --soft:#F8F8F9;
+  /* funnel colours, as in the product today */
+  --sA:#C3E6A6; --sAline:#8FCF63; --sB:#00A63E; --sLink:#E3F2DD;
+  --dB:#0087E8; --dC:#0064C8; --dLink:#D6E6F5;
+  /* reason groups: neutral purple steps, so they never read as supply or demand */
+  --g1:#562E76; --g2:#A48DB5; --g3:#D9CFE0;
+  --font:"Kentledge","Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --ease:cubic-bezier(.2,.8,.2,1);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+::selection{background:#DDD5E4;color:var(--dp)}
+html,body{margin:0}
+body{background:var(--bg);color:var(--dp);font:400 14px/1.4 var(--font);-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.num{font-variant-numeric:tabular-nums}
+.ic{width:14px;height:14px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.page{max-width:1440px;margin:0 auto;padding:24px 16px}
+.block{background:var(--surface);border-radius:12px;padding:32px;display:flex;flex-direction:column;gap:24px}
+
+/* header */
+.ph{display:flex;justify-content:space-between;align-items:flex-start;gap:16px 24px;flex-wrap:wrap}
+.ph h1{margin:0;font-size:24px;line-height:1.2;font-weight:900;color:#000}
+.ph p{margin:8px 0 0;font-size:12px;color:var(--dp80);max-width:560px}
+.meta{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:12px;color:var(--dp80)}
+.ctrl{display:flex;align-items:center;gap:12px;flex-wrap:wrap;position:relative}
+.seg{display:inline-flex;gap:2px;padding:2px;border:1px solid var(--dp20);border-radius:8px;background:var(--surface)}
+.seg button{display:inline-flex;align-items:center;gap:4px;border:0;border-radius:6px;background:var(--surface);height:28px;padding:0 10px;font-size:12px;font-weight:500;color:var(--dp80);white-space:nowrap}
+.seg button:hover{background:var(--soft)}
+.seg button[aria-pressed="true"]{background:var(--purple10);color:var(--purple);font-weight:600}
+.seg button:disabled{color:var(--dp20);cursor:not-allowed;background:var(--surface)}
+.btn{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:8px;border:1px solid var(--dp20);background:var(--surface);color:var(--dp);font-size:12px;font-weight:600;white-space:nowrap;transition:background .15s,border-color .15s,transform .1s}
+.btn:hover{background:var(--soft)}
+.btn:active{transform:scale(.97)}
+.btn[aria-pressed="true"]{background:var(--purple10);border-color:var(--purple);color:var(--purple)}
+.btn[aria-disabled="true"]{color:var(--dp60);background:var(--soft);cursor:not-allowed}
+.btn.primary{background:var(--dp);border-color:var(--dp);color:#fff}
+.btn.primary:hover{background:#30376A}
+.sw{width:26px;height:14px;border-radius:7px;background:var(--dp20);position:relative;transition:background .2s}
+.sw::after{content:"";position:absolute;left:2px;top:2px;width:10px;height:10px;border-radius:50%;background:#fff;transition:transform .2s var(--ease)}
+[aria-pressed="true"] .sw{background:var(--purple)}
+[aria-pressed="true"] .sw::after{transform:translateX(12px)}
+
+/* custom period popover */
+.pop{position:absolute;right:0;top:42px;z-index:20;width:340px;background:var(--surface);border:1px solid var(--dp20);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:14px;box-shadow:0 12px 32px rgba(35,41,81,.14)}
+.pop h2{margin:0;font-size:14px;font-weight:700}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:2px;background:var(--bg);border-radius:8px}
+.tabs button{border:0;border-radius:6px;height:28px;background:transparent;font-size:12px;font-weight:500;color:var(--dp80)}
+.tabs button[aria-selected="true"]{background:var(--surface);color:var(--dp);font-weight:600;box-shadow:0 1px 2px rgba(35,41,81,.12)}
+.f{display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--dp80)}
+.frow{display:flex;gap:8px;align-items:center}
+.in{height:34px;border:1px solid var(--dp20);border-radius:8px;padding:0 10px;background:var(--surface);font-size:14px;color:var(--dp);min-width:0}
+.in:focus{border-color:var(--purple);outline:0;box-shadow:0 0 0 3px var(--purple10)}
+.in.n{width:84px}
+.hint{font-size:12px;color:var(--dp80);margin:0}
+.hint b{color:var(--dp);font-weight:600}
+.err{font-size:12px;color:var(--red);margin:0}
+.pop-a{display:flex;justify-content:flex-end;gap:8px}
+
+/* period band */
+.band{background:var(--soft);border:1px solid var(--dp10);border-radius:12px;padding:16px 20px;display:grid;grid-template-columns:minmax(300px,auto) minmax(260px,1fr);gap:16px 40px;align-items:center}
+.plines{display:flex;flex-direction:column;gap:8px;min-width:0}
+.pl{display:grid;grid-template-columns:76px 1fr;gap:8px;align-items:baseline;font-size:14px}
+.pl .k{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--dp80)}
+.pl .v{font-weight:600}
+.pl .v span{font-weight:400;color:var(--dp80)}
+.dot{width:10px;height:10px;border-radius:3px;background:var(--purple);flex:none}
+.dot.prev{background:var(--g3);box-shadow:inset 0 0 0 1px var(--g2)}
+.note{grid-column:1/-1;display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--dp80);margin:0}
+.note.warn{color:#7A4B00;background:#FFF6DD;border-radius:8px;padding:8px 12px}
+.note .ic{margin-top:2px}
+.note b{font-weight:600;color:inherit}
+.track-w{min-width:0}
+.track-top{position:relative;height:18px;font-size:11px;color:var(--dp80)}
+.track-top span{position:absolute;bottom:2px;white-space:nowrap;transform:translateX(-50%)}
+.track-top span.l{transform:none}
+.track{position:relative;height:22px;border-radius:6px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--dp10);overflow:hidden}
+.tseg{position:absolute;top:0;bottom:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;transition:left .45s var(--ease),width .45s var(--ease)}
+.tseg.cur{background:var(--purple);color:#fff}
+.tseg.prev{background:var(--g3);color:var(--purple)}
+.tseg.miss{background:repeating-linear-gradient(135deg,transparent 0 5px,var(--dp10) 5px 7px);color:var(--dp80);font-weight:500}
+.tseg.out{background:var(--bg)}
+.tstart{position:absolute;top:0;bottom:0;width:0;border-left:2px solid var(--dp);transition:left .45s var(--ease)}
+.track-ax{position:relative;height:16px;margin-top:4px;font-size:11px;color:var(--dp80)}
+.track-ax span{position:absolute;top:0;white-space:nowrap;transform:translateX(-50%)}
+.track-ax span.l{transform:none}
+.track-ax span.r{transform:translateX(-100%)}
+
+/* funnel cards */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+.card{border:1px solid var(--dp10);border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:16px;min-width:0;container-type:inline-size}
+.card-h{display:flex;justify-content:space-between;align-items:center;gap:8px 16px;flex-wrap:wrap;min-height:30px}
+.card-h h2{margin:0;font-size:16px;line-height:1.2;font-weight:900;display:flex;align-items:center;gap:8px}
+.ibtn{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:6px;border:0;background:transparent;color:var(--dp60)}
+.ibtn:hover,.ibtn[aria-expanded="true"]{background:var(--bg);color:var(--dp)}
+.about{margin:0;font-size:12px;color:var(--dp80);background:var(--soft);border-radius:8px;padding:10px 12px}
+.dsp{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--dp80)}
+.dsp button{height:26px;padding:0 10px;border-radius:6px;border:0;background:var(--blue10);color:var(--dp);font-size:12px;font-weight:500}
+.dsp button[aria-pressed="true"]{background:var(--dp);color:#fff;font-weight:600}
+
+.fn{display:flex;flex-direction:column;--nw:176px;--rw:176px}
+.phase{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--dp80);padding:10px 8px 6px}
+.phase:first-child{padding-top:0}
+.pb{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:5px;background:var(--dp10);color:var(--dp);font-size:11px;font-weight:700;letter-spacing:0}
+.phase em{font-style:normal;font-weight:400;text-transform:none;letter-spacing:0;color:var(--dp60)}
+.step{border-radius:10px;padding:0 8px;cursor:pointer;transition:background .15s,box-shadow .15s}
+.step:hover{background:var(--soft)}
+.step.on{background:var(--bg);box-shadow:inset 0 0 0 1px var(--dp20)}
+.step.last{cursor:default}
+.step.last:hover{background:transparent}
+.step.peer{background:var(--soft)}
+.r{display:grid;grid-template-columns:var(--nw) minmax(0,1fr) var(--rw);gap:12px;align-items:center}
+.r.st{min-height:44px}
+.nm{font-size:14px;text-align:right;display:flex;justify-content:flex-end;align-items:center;gap:6px;min-width:0}
+.step.on .nm{font-weight:600}
+.same{display:inline-flex;align-items:center;color:var(--dp60)}
+.barw{position:relative;height:28px}
+.bar{position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);border-radius:6px;display:grid;place-items:center;font-size:12px;font-weight:600;color:#fff;transition:width .5s var(--ease)}
+.bar.sA{background:var(--sA);color:var(--dp);box-shadow:inset 0 0 0 1px var(--sAline)}
+.bar.sB{background:var(--sB)}
+.bar.dB{background:var(--dB)}
+.bar.dC{background:var(--dC)}
+.step.on .bar{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--dp)}
+.outl{position:absolute;top:0;bottom:0;display:flex;align-items:center;font-size:12px;font-weight:600;color:var(--dp);transition:left .5s var(--ease)}
+.val{display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:0}
+.cnt{font-size:14px;font-weight:600;line-height:1.25}
+.cnt small{display:block;font-size:11px;font-weight:400;color:var(--dp60)}
+.chg{font-size:12px;font-weight:500;color:var(--dp80);white-space:nowrap}
+.r.dr{min-height:30px;align-items:stretch}
+.link{align-self:stretch;margin:-8px 0;transition:clip-path .5s var(--ease)}
+.fn.sup .link{background:var(--sLink)}
+.fn.dem .link{background:var(--dLink)}
+.dtx{align-self:center;font-size:12px;line-height:1.35;color:var(--red);padding:4px 0}
+.dtx.zero{color:var(--dp60)}
+.dtx .big{display:inline-block;background:var(--red10);border-radius:6px;padding:2px 8px;margin-left:-8px;font-weight:600}
+.dtx small{display:block;font-size:11px;color:var(--dp60)}
+.dtx small b{font-weight:600}
+.dtx small b.bad{color:var(--red)}
+.dtx small b.good{color:var(--ok)}
+.fnote{display:flex;gap:8px;align-items:flex-start;margin:0;font-size:12px;color:var(--dp80)}
+.fnote .ic{margin-top:2px;color:var(--dp60)}
+
+/* reasons */
+.why{border-top:1px solid var(--dp10);padding-top:16px;display:flex;flex-direction:column;gap:14px}
+.why-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px 16px;flex-wrap:wrap}
+.why-h h3{margin:0;font-size:14px;font-weight:700}
+.why-h span{font-size:12px;color:var(--dp80)}
+.why-c{margin:-8px 0 0;font-size:12px;color:var(--dp80)}
+.why-c b{font-weight:600}
+.why-c b.bad{color:var(--red)}
+.why-c b.good{color:var(--ok)}
+.split{display:flex;height:10px;border-radius:5px;overflow:hidden;gap:2px}
+.split i{display:block;min-width:4px;transition:flex-grow .5s var(--ease)}
+.lg{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--dp80)}
+.lg span{display:inline-flex;align-items:center;gap:6px}
+.lg i{width:10px;height:10px;border-radius:3px}
+.lg b{font-weight:600;color:var(--dp)}
+.rs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.rs li{display:grid;grid-template-columns:16px minmax(0,1fr) auto auto;gap:4px 12px;align-items:baseline}
+.rs .rk{font-size:12px;color:var(--dp60);text-align:right}
+.rs .rn{font-size:14px;display:flex;flex-wrap:wrap;gap:2px 8px;align-items:baseline;min-width:0}
+.rs code{font:400 11px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--dp60);overflow-wrap:anywhere}
+.rs .rc{font-size:14px;font-weight:600;text-align:right}
+.rs .rc small{font-size:11px;font-weight:400;color:var(--dp60);margin-left:6px}
+.rs .rp{font-size:12px;color:var(--dp80);text-align:right;min-width:44px}
+.rs .rb{grid-column:2/-1;height:4px;border-radius:2px;background:var(--dp10);overflow:hidden}
+.rs .rb i{display:block;height:100%;border-radius:2px;transition:width .5s var(--ease)}
+.empty{margin:0;font-size:14px;color:var(--dp80)}
+
+/* prototype control */
+.proto{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px;padding:12px 16px;border:1px dashed var(--dp20);border-radius:12px;font-size:12px;color:var(--dp80)}
+.proto b{color:var(--dp);font-weight:600}
+
+@container (max-width:560px){
+  .fn{--nw:128px;--rw:150px}
+  .nm{font-size:12px}
+}
+@container (max-width:440px){
+  .fn{--nw:96px;--rw:132px}
+  .r{gap:8px}
+  .phase em{display:none}
+}
+@media (max-width:1100px){
+  .cols{grid-template-columns:1fr}
+  .band{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  .block{padding:20px 16px}
+  .card{padding:16px}
+  .pop{left:0;right:auto;width:min(340px,calc(100vw - 64px))}
+  .pl{grid-template-columns:1fr;gap:2px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.dnav{display:flex;gap:4px;margin:0 0 12px;padding:4px;background:var(--surface);border-radius:12px;width:max-content;max-width:100%}
+.dnav a{display:inline-flex;align-items:center;height:32px;padding:0 16px;border-radius:8px;font-size:14px;font-weight:500;color:var(--dp80);text-decoration:none;transition:background .15s}
+.dnav a:hover{background:var(--soft)}
+.dnav a[aria-current="page"]{background:var(--purple10);color:var(--purple);font-weight:600}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 4 2.5 20h19L12 4zM12 10v4M12 17h.01"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.700-5.700l-1 1M14 10a4 4 0 0 0-5.700 0l-3 3a4 4 0 0 0 5.700 5.700l1-1"/></symbol>
+</svg>
+
+<div class="page">
+  <nav class="dnav" aria-label="Deal sections"><a href="./">Performance</a><a href="funnels.html" aria-current="page">Funnels</a></nav>
+  <main class="block">
+    <header class="ph">
+      <div>
+        <h1>Funnels</h1>
+        <p>Where requests for this deal stop on the way to a delivered impression, and why. Select a stage to see why requests dropped after it.</p>
+        <div class="meta"><svg class="ic"><use href="#i-clock"/></svg><span id="meta"></span></div>
+      </div>
+      <div class="ctrl">
+        <div class="seg" id="presets" role="group" aria-label="Period"></div>
+        <button class="btn" id="cmp" aria-pressed="false"><span class="sw"></span>Compare with previous period</button>
+        <div class="pop" id="pop" hidden role="dialog" aria-label="Custom period">
+          <h2>Custom period</h2>
+          <div class="tabs" role="tablist">
+            <button role="tab" id="tab-last" aria-selected="true">Last hours or days</button>
+            <button role="tab" id="tab-range" aria-selected="false">Start and end</button>
+          </div>
+          <div id="pane-last" class="f">
+            <label for="n">Show the last</label>
+            <div class="frow">
+              <input class="in n num" id="n" type="number" min="1" value="7" inputmode="numeric">
+              <select class="in" id="unit" aria-label="Unit"><option value="h">hours</option><option value="d">days</option></select>
+            </div>
+          </div>
+          <div id="pane-range" class="f" hidden>
+            <label for="from">From (UTC)</label>
+            <input class="in" id="from" type="datetime-local" step="3600">
+            <label for="to">To (UTC)</label>
+            <input class="in" id="to" type="datetime-local" step="3600">
+          </div>
+          <p class="hint" id="pop-hint"></p>
+          <p class="err" id="pop-err" hidden></p>
+          <div class="pop-a">
+            <button class="btn" id="pop-cancel">Cancel</button>
+            <button class="btn primary" id="pop-apply">Apply</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="band" aria-label="Selected period">
+      <div class="plines" id="plines"></div>
+      <div class="track-w" aria-hidden="true">
+        <div class="track-top" id="ttop"></div>
+        <div class="track" id="track"></div>
+        <div class="track-ax" id="tax"></div>
+      </div>
+      <p class="note" id="note" hidden></p>
+    </section>
+
+    <div class="cols">
+      <section class="card" id="card-sup">
+        <div class="card-h">
+          <h2>Supply funnel <button class="ibtn" aria-expanded="false" aria-controls="about-sup" aria-label="About the supply funnel"><svg class="ic"><use href="#i-info"/></svg></button></h2>
+        </div>
+        <p class="about" id="about-sup" hidden>Ad requests on the deal's ad units, through the initial validation and the policy, consent and IVT checks, to valid opportunities for demand. Then the impressions that reached deal matching for this deal and passed it.</p>
+        <div class="fn sup" id="fn-sup"></div>
+        <p class="fnote"><svg class="ic"><use href="#i-info"/></svg>Phase A counts belong to the deal's ad units and are shared with every other deal on them. Do not add them up across deals.</p>
+        <div class="why" id="why-sup" aria-live="polite"></div>
+      </section>
+
+      <section class="card" id="card-dem">
+        <div class="card-h">
+          <h2>Demand funnel <button class="ibtn" aria-expanded="false" aria-controls="about-dem" aria-label="About the demand funnel"><svg class="ic"><use href="#i-info"/></svg></button></h2>
+          <div class="dsp" role="group" aria-label="DSP"><span>DSP</span><button aria-pressed="true">All DSPs</button><button aria-pressed="false">OZ Internal Bidder DSP</button></div>
+        </div>
+        <p class="about" id="about-dem" hidden>Starts where the supply funnel ends: impressions that passed deal matching. Then the bid requests sent to the deal's DSPs, their bid responses, HX auction wins and rendered impressions.</p>
+        <div class="fn dem" id="fn-dem"></div>
+        <p class="fnote"><svg class="ic"><use href="#i-info"/></svg>Phase C counts are per DSP: an impression sent to several DSPs is one bid request for each of them.</p>
+        <div class="why" id="why-dem" aria-live="polite"></div>
+      </section>
+    </div>
+  </main>
+
+  <div class="proto">
+    <b>Prototype only</b><span>Deal has been running for</span>
+    <div class="seg" id="age" role="group" aria-label="Deal age"><button data-age="963" aria-pressed="true">40 days</button><button data-age="10" aria-pressed="false">10 hours</button></div>
+    <span>Switch to see how a young deal changes the period options and the comparison.</span>
+  </div>
+</div>
+
+<script>
+/* ---------- time ---------- */
+const HOUR = 3600e3;
+const NOW = Date.UTC(2026, 10, 25, 12);            // end of the last complete hour
+const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const p2 = n => String(n).padStart(2, '0');
+const tAt = ago => new Date(NOW - ago * HOUR);
+const fDate = d => `${MON[d.getUTCMonth()]} ${d.getUTCDate()}`;
+const fTime = d => `${p2(d.getUTCHours())}:00`;
+const fDT = ago => { const d = tAt(ago); return `${fDate(d)}, ${fTime(d)}`; };
+const fRange = (a, b) => {                           // a, b = hours ago, a > b
+  const A = tAt(a), B = tAt(b);
+  return fDate(A) === fDate(B) ? `${fDate(A)}, ${fTime(A)} – ${fTime(B)}` : `${fDT(a)} – ${fDT(b)}`;
+};
+const fDur = h => h < 48 ? `${h} h` : (h % 24 ? `${Math.floor(h / 24)} d ${h % 24} h` : `${h / 24} d`);
+const fDurLong = h => h < 48 ? `${h} hour${h === 1 ? '' : 's'}` : (h % 24 ? `${Math.floor(h / 24)} days ${h % 24} h` : `${h / 24} days`);
+
+/* ---------- sample data: one value per hour for the whole deal ---------- */
+const rnd = i => { const x = Math.sin(i * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+const MAXH = 963;
+const HRS = Array.from({ length: MAXH }, (_, i) => {
+  const hod = tAt(i + 1).getUTCHours();
+  const day = 0.55 + 0.45 * Math.sin((hod - 7) / 24 * Math.PI * 2) ** 2 + (hod > 8 && hod < 22 ? 0.35 : 0);
+  const trend = 1 - 0.42 * Math.min(i / 300, 1);
+  const req = 5300 * day * trend * (0.85 + 0.3 * rnd(i));
+  const v1 = req * (1 - 0.012 - 0.006 * rnd(i + 9));
+  const v2 = v1 * (1 - 0.011 - 0.008 * rnd(i + 21));
+  const pass = v2 * (0.5 + 0.12 * Math.sin(i / 61) + 0.06 * rnd(i + 5));
+  const bid = pass * (0.4 + 0.05 * Math.sin(i / 90 + 1));
+  const resp = bid * (0.9 + 0.03 * rnd(i + 33));
+  const rend = resp * (0.14 + 0.03 * Math.sin(i / 45));
+  return [req, v1, v2, v2, pass, bid, resp, resp, rend];
+});
+function sums(a, b, age) {                           // hours ago, a > b; hours before the deal start count as nothing
+  const out = Array(9).fill(0); let hours = 0;
+  for (let i = b; i < Math.min(a, age); i++) { hours++; HRS[i].forEach((v, k) => out[k] += v); }
+  return { v: out.map(Math.round), hours };
+}
+
+const FUN = {
+  sup: { ids: [0, 1, 2, 3, 4], cls: ['sA', 'sA', 'sA', 'sB', 'sB'],
+    names: ['Ad requests', 'Passed initial validation', 'Valid opportunities for demand', 'Reached deal matching', 'Passed deal matching'],
+    phases: { 0: ['A', 'Ad-unit level', 'shared across deals'], 3: ['B', 'Deal level', ''] } },
+  dem: { ids: [4, 5, 6, 7, 8], cls: ['dB', 'dC', 'dC', 'dC', 'dC'],
+    names: ['Passed deal matching', 'Bid requests sent', 'Bid responses', 'HX Auction win', 'Rendered impressions'],
+    phases: { 0: ['B', 'Deal level', ''], 1: ['C', 'DSP level', 'after fanout'] } }
+};
+const WHY = {
+  'sup0': [['Failed hard validation', 'AdRequestRejectedByHardValidation', 'Quality', 1]],
+  'sup1': [['Rejected by privacy rules', 'AdRequestRejectedByPrivacy', 'Geo & policy', 1]],
+  'sup3': [['No eligible DSP', 'NoEligibleDsps', 'No demand', .869], ['API framework targeting', 'ApiFrameworkTargetingMismatch', 'Targeting mismatch', .033],
+           ['VAST protocol targeting', 'VastProtocolTargetingMismatch', 'Targeting mismatch', .02], ['Connection type targeting', 'ConnectionTypeTargetingMismatch', 'Targeting mismatch', .02],
+           ['Device OS targeting', 'DeviceOsTargetingMismatch', 'Targeting mismatch', .02], ['IAB category targeting', 'IabCategoryTargetingMismatch', 'Targeting mismatch', .02],
+           ['Device type targeting', 'DeviceTypeTargetingMismatch', 'Targeting mismatch', .018]],
+  'dem0': [['Skipped: DSP QPS throttling', 'SkippedByDspQpsThrottling', 'Fanout', .792], ['Skipped: DSP time budget', 'SkippedByDspTimeBudget', 'Fanout', .2079], ['Skipped: DSP circuit breaker', 'SkippedByDspCircuitBreaker', 'Fanout', .0001]],
+  'dem1': [['Bid rejected', 'DealRejectedBids', 'Quality', .834], ['No bid', 'DealNoBid', 'No demand', .166]],
+  'dem3': [['Lost on publisher side', 'LostOnPublisherSide', 'Delivery', 1]]
+};
+function reasons(key, drop, salt) {
+  const base = WHY[key]; if (!base || !drop) return [];
+  const w = base.map((r, k) => r[3] * (1 + (salt ? 0.3 * (rnd(salt + k * 7) - 0.5) : 0)));
+  const tot = w.reduce((a, b) => a + b, 0);
+  const out = base.map((r, k) => ({ name: r[0], code: r[1], group: r[2], n: Math.round(drop * w[k] / tot) }));
+  out[0].n += drop - out.reduce((a, r) => a + r.n, 0);
+  return out;
+}
+
+/* ---------- formatting ---------- */
+const fN = n => n >= 1e6 ? (n / 1e6).toFixed(2) + 'M' : n >= 1e4 ? (n / 1e3).toFixed(1) + 'K' : n.toLocaleString('en-US');
+const fP = x => (x * 100).toFixed(1) + '%';
+const arrow = x => x > 0 ? '▲' : x < 0 ? '▼' : '●';
+
+/* ---------- state ---------- */
+const S = { age: 963, len: 168, end: 0, preset: '7d', cmp: false, sel: { sup: null, dem: null }, auto: { sup: true, dem: true } };
+const PRESETS = [['1h', 1], ['24h', 24], ['7d', 168], ['30d', 720]];
+const $ = id => document.getElementById(id);
+
+function model() {
+  const a = S.end + S.len, b = S.end;
+  const cur = sums(a, b, S.age);
+  const prevStart = a + S.len;
+  const prevHours = Math.max(0, Math.min(prevStart, S.age) - a);
+  const canCmp = prevHours > 0;
+  const on = S.cmp && canCmp;
+  const prev = on ? sums(prevStart, a, S.age) : null;
+  const partial = on && prevHours < S.len;
+  return { a, b, cur, prev, prevStart, prevHours, canCmp, on, partial };
+}
+
+/* ---------- header ---------- */
+function drawPresets() {
+  const el = $('presets'); el.innerHTML = '';
+  PRESETS.forEach(([k, h]) => {
+    const off = h > S.age;
+    el.insertAdjacentHTML('beforeend', `<button data-p="${k}" aria-pressed="${S.preset === k}" ${off ? `disabled title="The deal has been running for ${fDurLong(S.age)} only"` : ''}>${k}</button>`);
+  });
+  el.insertAdjacentHTML('beforeend', `<button data-p="all" aria-pressed="${S.preset === 'all'}">Whole deal</button>
+    <button data-p="custom" aria-pressed="${S.preset === 'custom'}" aria-haspopup="dialog" aria-expanded="${!$('pop').hidden}">Custom<svg class="ic"><use href="#i-chev"/></svg></button>`);
+  $('meta').textContent = `Data refreshed ${fDate(tAt(0))}, 12:02 · complete hours up to ${fTime(tAt(0))} · all times UTC`;
+}
+$('presets').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b || b.disabled) return;
+  const p = b.dataset.p;
+  if (p === 'custom') { openPop(); return; }
+  closePop();
+  S.preset = p; S.end = 0;
+  S.len = p === 'all' ? S.age : PRESETS.find(x => x[0] === p)[1];
+  render();
+});
+$('cmp').addEventListener('click', () => {
+  if ($('cmp').getAttribute('aria-disabled') === 'true') return;
+  S.cmp = !S.cmp; render();
+});
+
+/* ---------- custom period ---------- */
+let mode = 'last';
+const toLocal = ago => { const d = tAt(ago); return `${d.getUTCFullYear()}-${p2(d.getUTCMonth() + 1)}-${p2(d.getUTCDate())}T${fTime(d)}`; };
+const fromLocal = v => Math.round((NOW - Date.parse(v + ':00Z')) / HOUR);
+function openPop() {
+  $('pop').hidden = false; $('pop-err').hidden = true;
+  $('from').min = $('to').min = toLocal(S.age); $('from').max = $('to').max = toLocal(0);
+  $('from').value = toLocal(S.end + S.len); $('to').value = toLocal(S.end);
+  if (S.len % 24 === 0 && S.len >= 48) { $('n').value = S.len / 24; $('unit').value = 'd'; } else { $('n').value = S.len; $('unit').value = 'h'; }
+  setMode(mode); drawPresets(); (mode === 'last' ? $('n') : $('from')).focus();
+}
+function closePop() { $('pop').hidden = true; }
+function setMode(m) {
+  mode = m;
+  $('tab-last').setAttribute('aria-selected', m === 'last'); $('tab-range').setAttribute('aria-selected', m === 'range');
+  $('pane-last').hidden = m !== 'last'; $('pane-range').hidden = m !== 'range';
+  popHint();
+}
+function readPop() {
+  if (mode === 'last') {
+    const n = Math.floor(+$('n').value), h = n * ($('unit').value === 'd' ? 24 : 1);
+    if (!n || n < 1) return { err: 'Enter at least 1 hour.' };
+    if (h > S.age) return { err: `The deal has been running for ${fDurLong(S.age)}. Choose up to ${$('unit').value === 'd' ? Math.floor(S.age / 24) + ' days' : S.age + ' hours'}, or use Whole deal.` };
+    return { len: h, end: 0 };
+  }
+  if (!$('from').value || !$('to').value) return { err: 'Choose both a start and an end.' };
+  const a = fromLocal($('from').value), b = fromLocal($('to').value);
+  if (b < 0) return { err: `The end cannot be later than ${fDT(0)}, the last complete hour.` };
+  if (a > S.age) return { err: `The deal started on ${fDT(S.age)}. Choose a start from then on.` };
+  if (a - b < 1) return { err: 'The end must be at least 1 hour after the start.' };
+  return { len: a - b, end: b };
+}
+function popHint() {
+  const r = readPop();
+  $('pop-hint').innerHTML = r.err
+    ? `From 1 hour up to the whole deal: <b>${fDurLong(S.age)}</b>, since ${fDT(S.age)}.`
+    : `Shows <b>${fRange(r.end + r.len, r.end)}</b> · ${fDurLong(r.len)}.`;
+}
+['n', 'unit', 'from', 'to'].forEach(id => $(id).addEventListener('input', () => { $('pop-err').hidden = true; popHint(); }));
+$('tab-last').addEventListener('click', () => setMode('last'));
+$('tab-range').addEventListener('click', () => setMode('range'));
+$('pop-cancel').addEventListener('click', () => { closePop(); drawPresets(); });
+$('pop-apply').addEventListener('click', () => {
+  const r = readPop();
+  if (r.err) { $('pop-err').textContent = r.err; $('pop-err').hidden = false; return; }
+  S.len = r.len; S.end = r.end; S.preset = 'custom'; closePop(); render();
+});
+$('pop').addEventListener('keydown', e => { if (e.key === 'Escape') { closePop(); drawPresets(); } if (e.key === 'Enter' && e.target.tagName !== 'BUTTON') $('pop-apply').click(); });
+document.addEventListener('mousedown', e => { if (!$('pop').hidden && !e.target.closest('.ctrl')) { closePop(); drawPresets(); } });
+
+/* ---------- period band ---------- */
+function drawBand(m) {
+  const whole = S.len >= S.age && S.end === 0;
+  let h = `<div class="pl"><span class="k"><i class="dot"></i>${m.on ? 'Current' : 'Period'}</span><span class="v">${fRange(m.a, m.b)} <span>· ${fDur(S.len)}${whole ? ' · whole deal' : ''}</span></span></div>`;
+  if (m.on) {
+    const ps = Math.min(m.prevStart, S.age);
+    h += `<div class="pl"><span class="k"><i class="dot prev"></i>Previous</span><span class="v">${fRange(ps, m.a)} <span>· ${m.partial ? `${fDur(m.prevHours)} of ${fDur(S.len)}` : fDur(S.len)}</span></span></div>`;
+  }
+  $('plines').innerHTML = h;
+
+  const cmp = $('cmp'), note = $('note');
+  cmp.setAttribute('aria-disabled', !m.canCmp);
+  cmp.setAttribute('aria-pressed', m.on);
+  note.hidden = true; note.className = 'note';
+  if (!m.canCmp && S.cmp) {
+    note.hidden = false;
+    note.innerHTML = `<svg class="ic"><use href="#i-info"/></svg><span>Nothing to compare with: the deal started on <b>${fDT(S.age)}</b>, at the start of this period. Choose a shorter period to compare.</span>`;
+  } else if (m.partial) {
+    note.hidden = false; note.className = 'note warn';
+    note.innerHTML = `<svg class="ic"><use href="#i-warn"/></svg><span>The deal started on <b>${fDT(S.age)}</b>, so the previous period has <b>${fDurLong(m.prevHours)} of data, not ${fDurLong(S.len)}</b>. Volume changes are compared per hour. Rates are compared as they are.</span>`;
+  }
+  cmp.title = m.canCmp ? '' : 'There is no earlier data for this deal before the selected period';
+
+  /* track: a strip of time ending at the last complete hour */
+  const span = whole ? S.len : S.end + S.len * (m.on ? 2.5 : 1.6);
+  const x = ago => Math.max(0, Math.min(100, (1 - ago / span) * 100));
+  let t = '';
+  if (S.age < span) t += `<div class="tseg out" style="left:0;width:${x(S.age)}%"></div>`;
+  if (m.on) {
+    if (m.partial) t += `<div class="tseg miss" style="left:${x(m.prevStart)}%;width:${x(S.age) - x(m.prevStart)}%">No data</div>`;
+    const ps = Math.min(m.prevStart, S.age);
+    t += `<div class="tseg prev" style="left:${x(ps)}%;width:${x(m.a) - x(ps)}%">Previous</div>`;
+  }
+  t += `<div class="tseg cur" style="left:${x(m.a)}%;width:${x(m.b) - x(m.a)}%">${m.on ? 'Current' : 'Selected period'}</div>`;
+  if (S.age < span && S.age > m.a) t += `<div class="tstart" style="left:${x(S.age)}%"></div>`;
+  $('track').innerHTML = t;
+  $('ttop').innerHTML = S.age < span && S.age > m.a ? `<span style="left:${x(S.age)}%" class="${x(S.age) < 14 ? 'l' : ''}">Deal started</span>` : (whole ? `<span class="l" style="left:0">Deal started</span>` : '');
+  let ax = '';
+  const lab = (ago, cls) => `<span class="${cls || ''}" style="left:${x(ago)}%">${S.len < 48 ? fTime(tAt(ago)) : fDate(tAt(ago))}</span>`;
+  if (m.on && !m.partial) ax += lab(m.prevStart, x(m.prevStart) < 8 ? 'l' : '');
+  if (m.partial) ax += lab(S.age, x(S.age) < 8 ? 'l' : '');
+  ax += lab(m.a, x(m.a) < 8 ? 'l' : '');
+  if (S.end > 0 && x(m.b) < 90) ax += lab(m.b);
+  ax += `<span class="r" style="left:100%">${S.end === 0 ? 'Now' : fDate(tAt(0))}</span>`;
+  $('tax').innerHTML = ax;
+}
+
+/* ---------- funnels ---------- */
+function chgVol(c, p, m) {                           // volume change, per hour when the previous period is shorter
+  if (!p) return null;
+  const k = m.partial ? (m.cur.hours / m.prevHours) : 1;
+  return (c - p * k) / (p * k);
+}
+function drawFunnel(key, m) {
+  const F = FUN[key], el = $('fn-' + key);
+  const c = F.ids.map(i => m.cur.v[i]), p = m.prev ? F.ids.map(i => m.prev.v[i]) : null;
+  const top = c[0] || 1;
+  const drops = c.slice(0, -1).map((v, i) => v - c[i + 1]);
+  const maxDrop = Math.max(...drops);
+  if (S.auto[key]) S.sel[key] = maxDrop > 0 ? drops.indexOf(maxDrop) : 0;
+  const w = c.map(v => Math.max(v / top * 100, 5));
+  let h = '';
+  c.forEach((v, i) => {
+    if (F.phases[i]) { const ph = F.phases[i]; h += `<div class="phase"><span class="pb">${ph[0]}</span>Phase ${ph[0]} · ${ph[1]}${ph[2] ? ` <em>(${ph[2]})</em>` : ''}</div>`; }
+    const last = i === c.length - 1, share = v / top, inside = w[i] >= 16;
+    const shared = (key === 'sup' && last) || (key === 'dem' && i === 0);
+    const ch = p ? chgVol(v, p[i], m) : null;
+    h += `<div class="step${S.sel[key] === i ? ' on' : ''}${last ? ' last' : ''}" data-i="${i}" ${last ? '' : `role="button" tabindex="0" aria-pressed="${S.sel[key] === i}"`} ${shared ? 'data-shared' : ''}>
+      <div class="r st">
+        <div class="nm">${shared ? `<span class="same" title="${key === 'sup' ? 'The demand funnel starts from this number' : 'The supply funnel ends with this number'}"><svg class="ic"><use href="#i-link"/></svg></span>` : ''}<span>${F.names[i]}</span></div>
+        <div class="barw"><div class="bar ${F.cls[i]}" style="width:${w[i]}%">${inside ? Math.round(share * 100) + '%' : ''}</div>${inside ? '' : `<span class="outl" style="left:calc(50% + ${w[i] / 2}% + 8px)">${share < .01 && v ? '<1' : Math.round(share * 100)}%</span>`}</div>
+        <div class="val"><span class="cnt num" title="${v.toLocaleString('en-US')}">${fN(v)}${p ? `<small>prev ${fN(p[i])}</small>` : ''}</span>${ch === null ? '' : `<span class="chg num" title="Volume${m.partial ? ' per hour' : ''} compared with the previous period">${arrow(ch)} ${fP(Math.abs(ch))}</span>`}</div>
+      </div>`;
+    if (!last) {
+      const d = drops[i], rate = v ? d / v : 0, a1 = 50 - w[i] / 2, a2 = 50 + w[i] / 2, b1 = 50 - w[i + 1] / 2, b2 = 50 + w[i + 1] / 2;
+      let cmp = '';
+      if (p) { const pr = p[i] ? (p[i] - p[i + 1]) / p[i] : 0, pts = (rate - pr) * 100; cmp = `<small class="num">was ${fP(pr)} · <b class="${Math.abs(pts) < .05 ? '' : pts > 0 ? 'bad' : 'good'}">${Math.abs(pts) < .05 ? 'no change' : `${arrow(pts)} ${Math.abs(pts).toFixed(1)} pts`}</b></small>`; }
+      h += `<div class="r dr"><div></div><div class="link" style="clip-path:polygon(${a1}% 0,${a2}% 0,${b2}% 100%,${b1}% 100%)"></div>
+        <div class="dtx num${d ? '' : ' zero'}">${d ? `<span class="${d === maxDrop && d / v > .2 ? 'big' : ''}">↓ ${fP(rate)} · ${fN(d)} dropped</span>` : 'No drop'}${cmp}</div></div>`;
+    }
+    h += '</div>';
+  });
+  el.innerHTML = h;
+  drawWhy(key, m, c, p);
+}
+const GCOL = ['var(--g1)', 'var(--g2)', 'var(--g3)'];
+function drawWhy(key, m, c, p) {
+  const F = FUN[key], i = S.sel[key], el = $('why-' + key);
+  const d = c[i] - c[i + 1], rate = c[i] ? d / c[i] : 0;
+  let h = `<div class="why-h"><h3>${d ? `Why ${fN(d)} dropped after “${F.names[i]}”` : `Nothing dropped after “${F.names[i]}”`}</h3><span class="num">${fP(rate)} of ${fN(c[i])}</span></div>`;
+  let pd = 0;
+  if (p) {
+    pd = p[i] - p[i + 1]; const pr = p[i] ? pd / p[i] : 0, pts = (rate - pr) * 100;
+    h += `<p class="why-c num">Previous period: ${fN(pd)} dropped, ${fP(pr)} of ${fN(p[i])}. Drop rate <b class="${Math.abs(pts) < .05 ? '' : pts > 0 ? 'bad' : 'good'}">${Math.abs(pts) < .05 ? 'did not change' : `${pts > 0 ? 'up' : 'down'} ${Math.abs(pts).toFixed(1)} pts`}</b>.</p>`;
+  }
+  if (!d) { el.innerHTML = h + `<p class="empty">Every request that reached this stage also reached the next one.</p>`; return; }
+  const rs = reasons(key + i, d, 0), prs = p ? reasons(key + i, pd, m.a) : null;
+  const groups = [...new Set(rs.map(r => r.group))];
+  if (groups.length > 1) {
+    const gs = groups.map(g => rs.filter(r => r.group === g).reduce((a, r) => a + r.n, 0));
+    h += `<div><div class="split">${gs.map((n, k) => `<i style="flex-grow:${n};background:${GCOL[k % 3]}"></i>`).join('')}</div></div>
+      <div class="lg">${groups.map((g, k) => `<span><i style="background:${GCOL[k % 3]}"></i>${g} <b class="num">${fP(gs[k] / d)}</b></span>`).join('')}</div>`;
+  } else {
+    h += `<div class="lg"><span><i style="background:${GCOL[0]}"></i>All in one group: <b>${groups[0]}</b></span></div>`;
+  }
+  h += `<ol class="rs">${rs.map((r, k) => `<li><span class="rk num">${k + 1}</span>
+    <span class="rn">${r.name}<code>${r.code}</code></span>
+    <span class="rc num" title="${r.n.toLocaleString('en-US')}">${fN(r.n)}${prs ? `<small>prev ${fN(prs[k].n)}</small>` : ''}</span><span class="rp num">${fP(r.n / d)}</span>
+    <span class="rb"><i style="width:${r.n / d * 100}%;background:${GCOL[groups.indexOf(r.group) % 3]}"></i></span></li>`).join('')}</ol>`;
+  el.innerHTML = h;
+}
+['sup', 'dem'].forEach(key => {
+  const el = $('fn-' + key);
+  const pick = e => { const s = e.target.closest('.step'); if (!s || s.classList.contains('last')) return; S.sel[key] = +s.dataset.i; S.auto[key] = false; render(); const n = el.querySelector(`.step[data-i="${S.sel[key]}"]`); if (e.type === 'keydown') n.focus(); };
+  el.addEventListener('click', pick);
+  el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(e); } });
+  el.addEventListener('mouseover', e => { if (e.target.closest('[data-shared]')) document.querySelectorAll('[data-shared]').forEach(n => n.classList.add('peer')); });
+  el.addEventListener('mouseout', e => { if (e.target.closest('[data-shared]')) document.querySelectorAll('[data-shared]').forEach(n => n.classList.remove('peer')); });
+});
+
+/* ---------- small controls ---------- */
+document.querySelectorAll('.ibtn').forEach(b => b.addEventListener('click', () => {
+  const open = b.getAttribute('aria-expanded') !== 'true';
+  b.setAttribute('aria-expanded', open); $(b.getAttribute('aria-controls')).hidden = !open;
+}));
+document.querySelector('.dsp').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  document.querySelectorAll('.dsp button').forEach(x => x.setAttribute('aria-pressed', x === b));
+});
+$('age').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  document.querySelectorAll('#age button').forEach(x => x.setAttribute('aria-pressed', x === b));
+  S.age = +b.dataset.age; S.end = 0; S.auto = { sup: true, dem: true }; closePop();
+  if (S.age === 10) { S.len = 7; S.preset = 'custom'; S.cmp = true; } else { S.len = 168; S.preset = '7d'; }
+  render();
+});
+
+function render() {
+  const m = model();
+  drawPresets(); drawBand(m); drawFunnel('sup', m); drawFunnel('dem', m);
+}
+render();
+</script>
+</body>
+</html>
