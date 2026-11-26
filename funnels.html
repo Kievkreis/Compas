@@ -174,6 +174,7 @@ button{cursor:pointer}
 .dtx{grid-column:3;grid-row:2;align-self:center;padding-left:8px;font-size:12px;line-height:16px;color:var(--red);min-width:0}
 .rate{display:inline-block;margin-left:-8px;padding:2px 8px;border-radius:6px}
 .rate b{font-weight:600}
+.rate em{font-style:normal}
 .rate.big{background:var(--red10)}
 .dtx.zero{color:var(--dp60)}
 .dtx small{display:block;font-size:11px;line-height:16px;color:var(--dp60)}
@@ -224,8 +225,10 @@ svg.shape{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
 .proto b{color:var(--dp);font-weight:600}
 
 @container (max-width:560px){
-  .fn{--lw:150px;--rw:150px}
+  .fn{--lw:160px;--rw:136px}
   .fhead,.step{column-gap:10px}
+  .nm span{white-space:normal}
+  .rate em,.phase em{display:none}
 }
 @container (max-width:440px){
   .fn{--lw:112px;--rw:112px}
@@ -615,7 +618,7 @@ function drawFunnel(key, m) {
       const d = drops[i], rate = v ? d / v : 0;
       let cmp = '';
       if (p) { const pr = p[i] ? (p[i] - p[i + 1]) / p[i] : 0, pts = (rate - pr) * 100; cmp = `<small class="num">was ${fP(pr)} · <b class="${Math.abs(pts) < .05 ? '' : pts > 0 ? 'bad' : 'good'}">${Math.abs(pts) < .05 ? 'no change' : `${arrow(pts)} ${Math.abs(pts).toFixed(1)} pts`}</b></small>`; }
-      h += `<div class="dtx num${d ? '' : ' zero'}"><span class="rate${d && d === maxDrop && rate > .2 ? ' big' : ''}">${d ? `<b>↓ ${fP(rate)}</b><i> · </i><span>${fN(d)} dropped</span>` : 'No drop'}</span>${cmp}</div>`;
+      h += `<div class="dtx num${d ? '' : ' zero'}"><span class="rate${d && d === maxDrop && rate > .2 ? ' big' : ''}">${d ? `<b>↓ ${fP(rate)}</b><i> · </i><span>${fN(d)}<em> dropped</em></span>` : 'No drop'}</span>${cmp}</div>`;
     }
     h += '</div>';
   });
