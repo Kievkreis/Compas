@@ -64,49 +64,68 @@ button{cursor:pointer}
 [aria-pressed="true"] .sw::after{transform:translateX(12px)}
 
 /* custom period popover */
-.pop{position:absolute;right:0;top:42px;z-index:20;width:340px;background:var(--surface);border:1px solid var(--dp20);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:14px;box-shadow:0 12px 32px rgba(35,41,81,.14)}
-.pop h2{margin:0;font-size:14px;font-weight:700}
-.tabs{display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:2px;background:var(--bg);border-radius:8px}
-.tabs button{border:0;border-radius:6px;height:28px;background:transparent;font-size:12px;font-weight:500;color:var(--dp80)}
-.tabs button[aria-selected="true"]{background:var(--surface);color:var(--dp);font-weight:600;box-shadow:0 1px 2px rgba(35,41,81,.12)}
-.f{display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--dp80)}
-.frow{display:flex;gap:8px;align-items:center}
-.in{height:34px;border:1px solid var(--dp20);border-radius:8px;padding:0 10px;background:var(--surface);font-size:14px;color:var(--dp);min-width:0}
-.in:focus{border-color:var(--purple);outline:0;box-shadow:0 0 0 3px var(--purple10)}
-.in.n{width:84px}
+.pop{position:absolute;right:0;top:44px;z-index:20;width:556px;max-width:calc(100vw - 64px);background:var(--surface);border:1px solid var(--dp20);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:16px;box-shadow:0 12px 32px rgba(35,41,81,.14)}
+.pop-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.pop h2{margin:0;font-size:16px;font-weight:900}
 .hint{font-size:12px;color:var(--dp80);margin:0}
 .hint b{color:var(--dp);font-weight:600}
+.quick{display:flex;align-items:center;gap:8px;font-size:14px;padding-bottom:16px;border-bottom:1px solid var(--dp10)}
+.in{height:34px;border:1px solid var(--dp20);border-radius:8px;padding:0 10px;background:var(--surface);font-size:14px;color:var(--dp);min-width:0}
+.in:focus{border-color:var(--purple);outline:0;box-shadow:0 0 0 3px var(--purple10)}
+.in.n{width:76px}
+.cal-w{position:relative}
+.cal{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.cal-nav{position:absolute;top:-2px;display:inline-grid;place-items:center;width:28px;height:28px;border-radius:8px;border:0;background:transparent;color:var(--dp)}
+.cal-nav:hover{background:var(--bg)}
+.cal-nav:disabled{color:var(--dp20);cursor:not-allowed;background:transparent}
+#cal-prev{left:0}#cal-next{right:0}
+.mon-t{text-align:center;font-size:14px;font-weight:600;line-height:24px;margin-bottom:8px}
+.dow,.days{display:grid;grid-template-columns:repeat(7,1fr)}
+.dow span{text-align:center;font-size:11px;color:var(--dp60);line-height:24px}
+.days{row-gap:2px}
+.days button{height:32px;border:0;background:transparent;font-size:12px;font-variant-numeric:tabular-nums;color:var(--dp);border-radius:8px;position:relative}
+.days button:hover:not(:disabled){box-shadow:inset 0 0 0 1px var(--purple)}
+.days button:disabled{color:var(--dp20);cursor:not-allowed}
+.days button.r{background:var(--purple10);border-radius:0}
+.days button.s{background:var(--purple);color:#fff;font-weight:600;border-radius:8px 0 0 8px}
+.days button.e{background:var(--purple);color:#fff;font-weight:600;border-radius:0 8px 8px 0}
+.days button.s.e{border-radius:8px}
+.days button.today:not(.s):not(.e)::after{content:"";position:absolute;left:50%;bottom:4px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:var(--purple)}
+.se{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:end}
+.sef{display:grid;grid-template-columns:1fr auto;gap:2px 8px;align-items:center;padding:8px 8px 8px 12px;border:1px solid var(--dp10);border-radius:10px;transition:border-color .15s,box-shadow .15s}
+.sef.act{border-color:var(--purple);box-shadow:0 0 0 3px var(--purple10)}
+.sef .k{grid-column:1/-1;font-size:11px;color:var(--dp80)}
+.sef b{font-size:14px;font-weight:600}
+.sef .in{height:30px;padding:0 6px}
+.dash{padding-bottom:14px;color:var(--dp60)}
 .err{font-size:12px;color:var(--red);margin:0}
-.pop-a{display:flex;justify-content:flex-end;gap:8px}
+.pop-a{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.pop-a .hint{margin-right:auto}
+.btn:disabled{background:var(--soft);border-color:var(--dp10);color:var(--dp60);cursor:not-allowed}
 
 /* period band */
-.band{background:var(--soft);border:1px solid var(--dp10);border-radius:12px;padding:16px 20px;display:grid;grid-template-columns:minmax(300px,auto) minmax(260px,1fr);gap:16px 40px;align-items:center}
-.plines{display:flex;flex-direction:column;gap:8px;min-width:0}
-.pl{display:grid;grid-template-columns:76px 1fr;gap:8px;align-items:baseline;font-size:14px}
-.pl .k{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--dp80)}
+.band{background:var(--soft);border:1px solid var(--dp10);border-radius:12px;padding:16px 20px;display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,420px);gap:12px 48px;align-items:center}
+.plines{display:flex;flex-direction:column;gap:6px;min-width:0}
+.pl{display:grid;grid-template-columns:84px 1fr;gap:8px;align-items:baseline;font-size:14px}
+.pl .k{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--dp80)}
 .pl .v{font-weight:600}
 .pl .v span{font-weight:400;color:var(--dp80)}
 .dot{width:10px;height:10px;border-radius:3px;background:var(--purple);flex:none}
-.dot.prev{background:var(--g3);box-shadow:inset 0 0 0 1px var(--g2)}
+.dot.prev{background:var(--g2)}
 .note{grid-column:1/-1;display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--dp80);margin:0}
 .note.warn{color:#7A4B00;background:#FFF6DD;border-radius:8px;padding:8px 12px}
 .note .ic{margin-top:2px}
 .note b{font-weight:600;color:inherit}
-.track-w{min-width:0}
-.track-top{position:relative;height:18px;font-size:11px;color:var(--dp80)}
-.track-top span{position:absolute;bottom:2px;white-space:nowrap;transform:translateX(-50%)}
-.track-top span.l{transform:none}
-.track{position:relative;height:22px;border-radius:6px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--dp10);overflow:hidden}
-.tseg{position:absolute;top:0;bottom:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;transition:left .45s var(--ease),width .45s var(--ease)}
-.tseg.cur{background:var(--purple);color:#fff}
-.tseg.prev{background:var(--g3);color:var(--purple)}
-.tseg.miss{background:repeating-linear-gradient(135deg,transparent 0 5px,var(--dp10) 5px 7px);color:var(--dp80);font-weight:500}
-.tseg.out{background:var(--bg)}
-.tstart{position:absolute;top:0;bottom:0;width:0;border-left:2px solid var(--dp);transition:left .45s var(--ease)}
-.track-ax{position:relative;height:16px;margin-top:4px;font-size:11px;color:var(--dp80)}
-.track-ax span{position:absolute;top:0;white-space:nowrap;transform:translateX(-50%)}
-.track-ax span.l{transform:none}
-.track-ax span.r{transform:translateX(-100%)}
+.track-w{min-width:0;font-size:11px;color:var(--dp80)}
+.tcap{display:flex;justify-content:space-between;gap:12px;margin-bottom:6px}
+.track{position:relative;height:10px;border-radius:5px;background:var(--dp10);overflow:hidden}
+.tseg{position:absolute;top:0;bottom:0;transition:right .45s var(--ease),width .45s var(--ease)}
+.tseg.cur{background:var(--purple)}
+.tseg.prev{background:var(--g2)}
+.tseg.miss{background:repeating-linear-gradient(135deg,var(--surface) 0 4px,var(--dp10) 4px 6px)}
+.tax{position:relative;display:flex;justify-content:space-between;gap:12px;margin-top:6px;min-height:14px}
+.tax .mk{position:absolute;top:0;transform:translateX(-50%);white-space:nowrap;color:var(--dp);font-weight:600}
+.tax .mk::before{content:"";position:absolute;left:50%;top:-18px;height:14px;border-left:2px solid var(--dp)}
 
 /* funnel cards */
 .cols{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
@@ -120,6 +139,13 @@ button{cursor:pointer}
 .dsp button{height:26px;padding:0 10px;border-radius:6px;border:0;background:var(--blue10);color:var(--dp);font-size:12px;font-weight:500}
 .dsp button[aria-pressed="true"]{background:var(--dp);color:#fff;font-weight:600}
 
+.kp{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--dp10);border-bottom:1px solid var(--dp10)}
+.kp>div{padding:12px 16px 12px 0;min-width:0}
+.kp>div+div{padding-left:16px;border-left:1px solid var(--dp10)}
+.kl{display:block;font-size:11px;color:var(--dp80)}
+.kv{display:block;font-size:22px;line-height:30px;font-weight:900}
+.ks{display:block;font-size:12px;color:var(--dp80)}
+.ks b{font-weight:600}.ks b.bad{color:var(--red)}.ks b.good{color:var(--ok)}
 .fn{position:relative;display:flex;flex-direction:column;--lw:188px;--rw:176px}
 .fhead,.step{display:grid;grid-template-columns:var(--lw) minmax(0,1fr) var(--rw);column-gap:16px}
 .fhead{padding:0 12px 10px;font-size:11px;color:var(--dp60)}
@@ -131,7 +157,7 @@ button{cursor:pointer}
 .step{grid-template-rows:40px 38px;padding:8px 12px 0;border-radius:10px;cursor:pointer;transition:background .15s,box-shadow .15s}
 .step:hover{background:var(--soft)}
 .step.on{background:var(--bg);box-shadow:inset 0 0 0 1px var(--dp20)}
-.step.last{grid-template-rows:40px;padding-bottom:8px;cursor:default}
+.step.last{grid-template-rows:40px auto;padding-bottom:8px;cursor:default}
 .step.last:hover{background:transparent}
 .step.peer,.step.last.peer{background:var(--soft)}
 .lc{grid-column:1;grid-row:1/-1;min-width:0;display:flex;flex-direction:column}
@@ -167,7 +193,7 @@ svg.shape{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
 .fnote .ic{margin-top:2px;color:var(--dp60)}
 
 /* reasons */
-.why{border-top:1px solid var(--dp10);padding-top:16px;display:flex;flex-direction:column;gap:14px}
+.why{background:var(--bg);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:14px}
 .why-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px 16px;flex-wrap:wrap}
 .why-h h3{margin:0;font-size:14px;font-weight:700}
 .why-h span{font-size:12px;color:var(--dp80)}
@@ -189,7 +215,7 @@ svg.shape{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
 .rs .rc{font-size:14px;font-weight:600;text-align:right}
 .rs .rc small{font-size:11px;font-weight:400;color:var(--dp60);margin-left:6px}
 .rs .rp{font-size:12px;color:var(--dp80);text-align:right;min-width:44px}
-.rs .rb{grid-column:2/-1;height:4px;border-radius:2px;background:var(--dp10);overflow:hidden}
+.rs .rb{grid-column:2/-1;height:4px;border-radius:2px;background:var(--surface);overflow:hidden}
 .rs .rb i{display:block;height:100%;border-radius:2px;transition:width .5s var(--ease)}
 .empty{margin:0;font-size:14px;color:var(--dp80)}
 
@@ -214,11 +240,16 @@ svg.shape{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
 @media (max-width:1100px){
   .cols{grid-template-columns:1fr}
   .band{grid-template-columns:1fr}
+  .track-w{max-width:420px}
 }
 @media (max-width:640px){
   .block{padding:20px 16px}
   .card{padding:16px}
-  .pop{left:0;right:auto;width:min(340px,calc(100vw - 64px))}
+  .pop{left:0;right:auto}
+  .cal{grid-template-columns:1fr}
+  .cal .mon:first-child{display:none}
+  .kp{grid-template-columns:1fr}
+  .kp>div+div{padding-left:0;border-left:0;border-top:1px solid var(--dp10)}
   .pl{grid-template-columns:1fr;gap:2px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
@@ -233,6 +264,8 @@ svg.shape{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
   <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
   <symbol id="i-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
   <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 4 2.5 20h19L12 4zM12 10v4M12 17h.01"/></symbol>
   <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.700-5.700l-1 1M14 10a4 4 0 0 0-5.700 0l-3 3a4 4 0 0 0 5.700 5.700l1-1"/></symbol>
@@ -251,27 +284,26 @@ svg.shape{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
         <div class="seg" id="presets" role="group" aria-label="Period"></div>
         <button class="btn" id="cmp" aria-pressed="false"><span class="sw"></span>Compare with previous period</button>
         <div class="pop" id="pop" hidden role="dialog" aria-label="Custom period">
-          <h2>Custom period</h2>
-          <div class="tabs" role="tablist">
-            <button role="tab" id="tab-last" aria-selected="true">Last hours or days</button>
-            <button role="tab" id="tab-range" aria-selected="false">Start and end</button>
+          <div class="pop-h"><h2>Custom period</h2><span class="hint" id="pop-life"></span></div>
+          <div class="quick">
+            <label for="n">Last</label>
+            <input class="in n num" id="n" type="number" min="1" inputmode="numeric">
+            <select class="in" id="unit" aria-label="Unit"><option value="h">hours</option><option value="d">days</option></select>
+            <span class="hint">up to now, or pick days in the calendar</span>
           </div>
-          <div id="pane-last" class="f">
-            <label for="n">Show the last</label>
-            <div class="frow">
-              <input class="in n num" id="n" type="number" min="1" value="7" inputmode="numeric">
-              <select class="in" id="unit" aria-label="Unit"><option value="h">hours</option><option value="d">days</option></select>
-            </div>
+          <div class="cal-w">
+            <button class="cal-nav" id="cal-prev" aria-label="Earlier months"><svg class="ic"><use href="#i-left"/></svg></button>
+            <button class="cal-nav" id="cal-next" aria-label="Later months"><svg class="ic"><use href="#i-right"/></svg></button>
+            <div class="cal" id="cal"></div>
           </div>
-          <div id="pane-range" class="f" hidden>
-            <label for="from">From (UTC)</label>
-            <input class="in" id="from" type="datetime-local" step="3600">
-            <label for="to">To (UTC)</label>
-            <input class="in" id="to" type="datetime-local" step="3600">
+          <div class="se">
+            <div class="sef" id="pick-s"><span class="k">Start</span><b id="s-day"></b><select class="in num" id="s-h" aria-label="Start hour"></select></div>
+            <span class="dash">–</span>
+            <div class="sef" id="pick-e"><span class="k">End</span><b id="e-day"></b><select class="in num" id="e-h" aria-label="End hour"></select></div>
           </div>
-          <p class="hint" id="pop-hint"></p>
           <p class="err" id="pop-err" hidden></p>
           <div class="pop-a">
+            <span class="hint" id="pop-sum"></span>
             <button class="btn" id="pop-cancel">Cancel</button>
             <button class="btn primary" id="pop-apply">Apply</button>
           </div>
@@ -282,9 +314,9 @@ svg.shape{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
     <section class="band" aria-label="Selected period">
       <div class="plines" id="plines"></div>
       <div class="track-w" aria-hidden="true">
-        <div class="track-top" id="ttop"></div>
+        <div class="tcap" id="tcap"></div>
         <div class="track" id="track"></div>
-        <div class="track-ax" id="tax"></div>
+        <div class="tax" id="tax"></div>
       </div>
       <p class="note" id="note" hidden></p>
     </section>
@@ -295,6 +327,7 @@ svg.shape{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
           <h2>Supply funnel <button class="ibtn" aria-expanded="false" aria-controls="about-sup" aria-label="About the supply funnel"><svg class="ic"><use href="#i-info"/></svg></button></h2>
         </div>
         <p class="about" id="about-sup" hidden>Ad requests on the deal's ad units, through the initial validation and the policy, consent and IVT checks, to valid opportunities for demand. Then the impressions that reached deal matching for this deal and passed it.</p>
+        <div class="kp" id="kp-sup"></div>
         <div class="fn sup" id="fn-sup"></div>
         <p class="fnote"><svg class="ic"><use href="#i-info"/></svg>Phase A counts belong to the deal's ad units and are shared with every other deal on them. Do not add them up across deals.</p>
         <div class="why" id="why-sup" aria-live="polite"></div>
@@ -306,6 +339,7 @@ svg.shape{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
           <div class="dsp" role="group" aria-label="DSP"><span>DSP</span><button aria-pressed="true">All DSPs</button><button aria-pressed="false">OZ Internal Bidder DSP</button></div>
         </div>
         <p class="about" id="about-dem" hidden>Starts where the supply funnel ends: impressions that passed deal matching. Then the bid requests sent to the deal's DSPs, their bid responses, HX auction wins and rendered impressions.</p>
+        <div class="kp" id="kp-dem"></div>
         <div class="fn dem" id="fn-dem"></div>
         <p class="fnote"><svg class="ic"><use href="#i-info"/></svg>Phase C counts are per DSP: an impression sent to several DSPs is one bid request for each of them.</p>
         <div class="why" id="why-dem" aria-live="polite"></div>
@@ -331,8 +365,9 @@ const fDate = d => `${MON[d.getUTCMonth()]} ${d.getUTCDate()}`;
 const fTime = d => `${p2(d.getUTCHours())}:00`;
 const fDT = ago => { const d = tAt(ago); return `${fDate(d)}, ${fTime(d)}`; };
 const fRange = (a, b) => {                           // a, b = hours ago, a > b
-  const A = tAt(a), B = tAt(b);
-  return fDate(A) === fDate(B) ? `${fDate(A)}, ${fTime(A)} – ${fTime(B)}` : `${fDT(a)} – ${fDT(b)}`;
+  const A = tAt(a), B = tAt(b), mid = B.getUTCHours() === 0;          // an end at midnight reads as 24:00 of the day before
+  const Bd = mid ? fDate(new Date(B - 1)) : fDate(B), Bt = mid ? '24:00' : fTime(B);
+  return fDate(A) === Bd ? `${fDate(A)}, ${fTime(A)} – ${Bt}` : `${fDT(a)} – ${Bd}, ${Bt}`;
 };
 const fDur = h => h < 48 ? `${h} h` : (h % 24 ? `${Math.floor(h / 24)} d ${h % 24} h` : `${h / 24} d`);
 const fDurLong = h => h < 48 ? `${h} hour${h === 1 ? '' : 's'}` : (h % 24 ? `${Math.floor(h / 24)} days ${h % 24} h` : `${h / 24} days`);
@@ -417,7 +452,7 @@ function drawPresets() {
     el.insertAdjacentHTML('beforeend', `<button data-p="${k}" aria-pressed="${S.preset === k}" ${off ? `disabled title="The deal has been running for ${fDurLong(S.age)} only"` : ''}>${k}</button>`);
   });
   el.insertAdjacentHTML('beforeend', `<button data-p="all" aria-pressed="${S.preset === 'all'}">Whole deal</button>
-    <button data-p="custom" aria-pressed="${S.preset === 'custom'}" aria-haspopup="dialog" aria-expanded="${!$('pop').hidden}">Custom<svg class="ic"><use href="#i-chev"/></svg></button>`);
+    <button data-p="custom" aria-pressed="${S.preset === 'custom'}" aria-haspopup="dialog" aria-expanded="${!$('pop').hidden}">${S.preset === 'custom' ? 'Custom · ' + fDur(S.len) : 'Custom'}<svg class="ic"><use href="#i-chev"/></svg></button>`);
   $('meta').textContent = `Data refreshed ${fDate(tAt(0))}, 12:02 · complete hours up to ${fTime(tAt(0))} · all times UTC`;
 }
 $('presets').addEventListener('click', e => {
@@ -430,58 +465,86 @@ $('presets').addEventListener('click', e => {
   render();
 });
 $('cmp').addEventListener('click', () => {
-  if ($('cmp').getAttribute('aria-disabled') === 'true') return;
   S.cmp = !S.cmp; render();
 });
 
-/* ---------- custom period ---------- */
-let mode = 'last';
-const toLocal = ago => { const d = tAt(ago); return `${d.getUTCFullYear()}-${p2(d.getUTCMonth() + 1)}-${p2(d.getUTCDate())}T${fTime(d)}`; };
-const fromLocal = v => Math.round((NOW - Date.parse(v + ':00Z')) / HOUR);
+/* ---------- custom period: quick input + calendar, one shared range ---------- */
+const P = { a: 0, b: 0, pick: 'start', vy: 2026, vm: 9 };
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const D24 = 24 * HOUR, dayOf = ms => Math.floor(ms / D24) * D24;
+const startMs = () => NOW - P.a * HOUR, endMs = () => NOW - P.b * HOUR;
+$('s-h').innerHTML = Array.from({ length: 24 }, (_, h) => `<option value="${h}">${p2(h)}:00</option>`).join('');
+$('e-h').innerHTML = Array.from({ length: 24 }, (_, h) => `<option value="${h + 1}">${p2(h + 1)}:00</option>`).join('');
+function popErr() {
+  if (!(P.a - P.b >= 1)) return 'The end must be at least 1 hour after the start.';
+  if (P.a > S.age) return `The deal started on ${fDT(S.age)}, ${fDurLong(S.age)} ago. Choose a start from then on.`;
+  if (P.b < 0) return `Data is complete up to ${fDT(0)}. Choose an end up to then.`;
+  return '';
+}
 function openPop() {
-  $('pop').hidden = false; $('pop-err').hidden = true;
-  $('from').min = $('to').min = toLocal(S.age); $('from').max = $('to').max = toLocal(0);
-  $('from').value = toLocal(S.end + S.len); $('to').value = toLocal(S.end);
-  if (S.len % 24 === 0 && S.len >= 48) { $('n').value = S.len / 24; $('unit').value = 'd'; } else { $('n').value = S.len; $('unit').value = 'h'; }
-  setMode(mode); drawPresets(); (mode === 'last' ? $('n') : $('from')).focus();
+  P.a = S.end + S.len; P.b = S.end; P.pick = 'start';
+  const e = new Date(endMs() - 1); P.vy = e.getUTCFullYear(); P.vm = e.getUTCMonth() - 1;
+  if (P.vm < 0) { P.vm = 11; P.vy--; }
+  $('pop-life').textContent = `Deal running since ${fDT(S.age)} · UTC`;
+  $('pop').hidden = false; drawPop(); drawPresets(); $('n').focus(); $('n').select();
 }
 function closePop() { $('pop').hidden = true; }
-function setMode(m) {
-  mode = m;
-  $('tab-last').setAttribute('aria-selected', m === 'last'); $('tab-range').setAttribute('aria-selected', m === 'range');
-  $('pane-last').hidden = m !== 'last'; $('pane-range').hidden = m !== 'range';
-  popHint();
-}
-function readPop() {
-  if (mode === 'last') {
-    const n = Math.floor(+$('n').value), h = n * ($('unit').value === 'd' ? 24 : 1);
-    if (!n || n < 1) return { err: 'Enter at least 1 hour.' };
-    if (h > S.age) return { err: `The deal has been running for ${fDurLong(S.age)}. Choose up to ${$('unit').value === 'd' ? Math.floor(S.age / 24) + ' days' : S.age + ' hours'}, or use Whole deal.` };
-    return { len: h, end: 0 };
+function monthHtml(y, m) {
+  const first = Date.UTC(y, m, 1), days = new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
+  const lead = (new Date(first).getUTCDay() + 6) % 7;
+  const ok = P.a - P.b >= 1, sd = dayOf(startMs()), ed = dayOf(endMs() - 1), deal = NOW - S.age * HOUR, today = dayOf(NOW - 1);
+  let h = `<div class="mon"><div class="mon-t">${MONTHS[m]} ${y}</div><div class="dow">${['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'].map(d => `<span>${d}</span>`).join('')}</div><div class="days">${'<span></span>'.repeat(lead)}`;
+  for (let d = 1; d <= days; d++) {
+    const ms = Date.UTC(y, m, d), off = ms + D24 <= deal || ms >= NOW;
+    const cls = ok ? [ms === sd ? 's' : '', ms === ed ? 'e' : '', ms > sd && ms < ed ? 'r' : '', ms === today ? 'today' : ''].filter(Boolean).join(' ') : '';
+    h += `<button type="button" data-ms="${ms}" class="${cls}" ${off ? 'disabled' : ''} aria-label="${MON[m]} ${d}${ms === sd ? ', start' : ms === ed ? ', end' : ''}">${d}</button>`;
   }
-  if (!$('from').value || !$('to').value) return { err: 'Choose both a start and an end.' };
-  const a = fromLocal($('from').value), b = fromLocal($('to').value);
-  if (b < 0) return { err: `The end cannot be later than ${fDT(0)}, the last complete hour.` };
-  if (a > S.age) return { err: `The deal started on ${fDT(S.age)}. Choose a start from then on.` };
-  if (a - b < 1) return { err: 'The end must be at least 1 hour after the start.' };
-  return { len: a - b, end: b };
+  return h + '</div></div>';
 }
-function popHint() {
-  const r = readPop();
-  $('pop-hint').innerHTML = r.err
-    ? `From 1 hour up to the whole deal: <b>${fDurLong(S.age)}</b>, since ${fDT(S.age)}.`
-    : `Shows <b>${fRange(r.end + r.len, r.end)}</b> · ${fDurLong(r.len)}.`;
+function drawPop(src) {
+  const y2 = P.vm === 11 ? P.vy + 1 : P.vy, m2 = (P.vm + 1) % 12;
+  $('cal').innerHTML = monthHtml(P.vy, P.vm) + monthHtml(y2, m2);
+  $('cal-prev').disabled = Date.UTC(P.vy, P.vm, 1) <= NOW - S.age * HOUR;
+  $('cal-next').disabled = Date.UTC(y2, m2 + 1, 1) > NOW;
+  if (src !== 'n') {
+    const len = P.a - P.b;
+    if (P.b === 0 && len >= 1) { const d = len % 24 === 0 && len >= 48; $('n').value = d ? len / 24 : len; $('unit').value = d ? 'd' : 'h'; }
+    else $('n').value = '';
+  }
+  const err = popErr(), valid = P.a - P.b >= 1;
+  if (valid) {
+    const st = new Date(startMs()), en = new Date(endMs() - 1);
+    $('s-day').textContent = fDate(st); $('s-h').value = st.getUTCHours();
+    $('e-day').textContent = fDate(en); $('e-h').value = en.getUTCHours() + 1;
+  }
+  $('pick-s').classList.toggle('act', P.pick === 'start'); $('pick-e').classList.toggle('act', P.pick === 'end');
+  $('pop-sum').innerHTML = err ? '' : `<b>${fRange(P.a, P.b)}</b> · ${fDurLong(P.a - P.b)}`;
+  $('pop-err').textContent = err; $('pop-err').hidden = !err;
+  $('pop-apply').disabled = !!err;
 }
-['n', 'unit', 'from', 'to'].forEach(id => $(id).addEventListener('input', () => { $('pop-err').hidden = true; popHint(); }));
-$('tab-last').addEventListener('click', () => setMode('last'));
-$('tab-range').addEventListener('click', () => setMode('range'));
+$('cal').addEventListener('click', e => {
+  const b = e.target.closest('button[data-ms]'); if (!b || b.disabled) return;
+  const ms = +b.dataset.ms, dayStart = Math.min((NOW - ms) / HOUR, S.age), dayEnd = Math.max((NOW - ms - D24) / HOUR, 0);
+  if (P.pick === 'start' || dayEnd >= P.a) { P.a = dayStart; if (P.b >= P.a) P.b = dayEnd; P.pick = 'end'; }
+  else { P.b = dayEnd; P.pick = 'start'; }
+  drawPop();
+});
+['n', 'unit'].forEach(id => $(id).addEventListener('input', () => {
+  const n = Math.floor(+$('n').value); if (!n || n < 1) return;
+  P.a = n * ($('unit').value === 'd' ? 24 : 1); P.b = 0; P.pick = 'start'; drawPop('n');
+}));
+$('s-h').addEventListener('change', () => { P.a = (NOW - dayOf(startMs()) - $('s-h').value * HOUR) / HOUR; drawPop(); });
+$('e-h').addEventListener('change', () => { P.b = (NOW - dayOf(endMs() - 1) - $('e-h').value * HOUR) / HOUR; drawPop(); });
+$('pick-s').addEventListener('click', e => { if (e.target.tagName !== 'SELECT') { P.pick = 'start'; drawPop(); } });
+$('pick-e').addEventListener('click', e => { if (e.target.tagName !== 'SELECT') { P.pick = 'end'; drawPop(); } });
+$('cal-prev').addEventListener('click', () => { if (--P.vm < 0) { P.vm = 11; P.vy--; } drawPop(); });
+$('cal-next').addEventListener('click', () => { if (++P.vm > 11) { P.vm = 0; P.vy++; } drawPop(); });
 $('pop-cancel').addEventListener('click', () => { closePop(); drawPresets(); });
 $('pop-apply').addEventListener('click', () => {
-  const r = readPop();
-  if (r.err) { $('pop-err').textContent = r.err; $('pop-err').hidden = false; return; }
-  S.len = r.len; S.end = r.end; S.preset = 'custom'; closePop(); render();
+  if (popErr()) return;
+  S.len = P.a - P.b; S.end = P.b; S.preset = 'custom'; closePop(); render();
 });
-$('pop').addEventListener('keydown', e => { if (e.key === 'Escape') { closePop(); drawPresets(); } if (e.key === 'Enter' && e.target.tagName !== 'BUTTON') $('pop-apply').click(); });
+$('pop').addEventListener('keydown', e => { if (e.key === 'Escape') { closePop(); drawPresets(); } if (e.key === 'Enter' && e.target.id === 'n') $('pop-apply').click(); });
 document.addEventListener('mousedown', e => { if (!$('pop').hidden && !e.target.closest('.ctrl')) { closePop(); drawPresets(); } });
 
 /* ---------- period band ---------- */
@@ -507,28 +570,19 @@ function drawBand(m) {
   }
   cmp.title = m.canCmp ? '' : 'There is no earlier data for this deal before the selected period';
 
-  /* track: a strip of time ending at the last complete hour */
-  const span = whole ? S.len : S.end + S.len * (m.on ? 2.5 : 1.6);
+  /* track: the whole life of the deal, with the chosen window marked on it */
+  const ps = Math.min(m.prevStart, S.age), span = m.partial ? m.prevStart : S.age;
   const x = ago => Math.max(0, Math.min(100, (1 - ago / span) * 100));
+  const wc = Math.max(x(m.b) - x(m.a), 1.2), rc = 100 - x(m.b);
   let t = '';
-  if (S.age < span) t += `<div class="tseg out" style="left:0;width:${x(S.age)}%"></div>`;
-  if (m.on) {
-    if (m.partial) t += `<div class="tseg miss" style="left:${x(m.prevStart)}%;width:${x(S.age) - x(m.prevStart)}%">No data</div>`;
-    const ps = Math.min(m.prevStart, S.age);
-    t += `<div class="tseg prev" style="left:${x(ps)}%;width:${x(m.a) - x(ps)}%">Previous</div>`;
-  }
-  t += `<div class="tseg cur" style="left:${x(m.a)}%;width:${x(m.b) - x(m.a)}%">${m.on ? 'Current' : 'Selected period'}</div>`;
-  if (S.age < span && S.age > m.a) t += `<div class="tstart" style="left:${x(S.age)}%"></div>`;
+  if (m.partial) t += `<i class="tseg miss" style="left:0;width:${x(S.age)}%"></i>`;
+  if (m.on) t += `<i class="tseg prev" style="right:${rc + wc}%;width:${Math.max(x(m.a) - x(ps), 1.2)}%"></i>`;
+  t += `<i class="tseg cur" style="right:${rc}%;width:${wc}%"></i>`;
   $('track').innerHTML = t;
-  $('ttop').innerHTML = S.age < span && S.age > m.a ? `<span style="left:${x(S.age)}%" class="${x(S.age) < 14 ? 'l' : ''}">Deal started</span>` : (whole ? `<span class="l" style="left:0">Deal started</span>` : '');
-  let ax = '';
-  const lab = (ago, cls) => `<span class="${cls || ''}" style="left:${x(ago)}%">${S.len < 48 ? fTime(tAt(ago)) : fDate(tAt(ago))}</span>`;
-  if (m.on && !m.partial) ax += lab(m.prevStart, x(m.prevStart) < 8 ? 'l' : '');
-  if (m.partial) ax += lab(S.age, x(S.age) < 8 ? 'l' : '');
-  ax += lab(m.a, x(m.a) < 8 ? 'l' : '');
-  if (S.end > 0 && x(m.b) < 90) ax += lab(m.b);
-  ax += `<span class="r" style="left:100%">${S.end === 0 ? 'Now' : fDate(tAt(0))}</span>`;
-  $('tax').innerHTML = ax;
+  $('tcap').innerHTML = `<span>${m.partial ? 'Both periods on the timeline' : 'Where this is in the life of the deal'}</span><span>${m.partial ? 'Striped: before the deal started' : 'Running for ' + fDurLong(S.age)}</span>`;
+  $('tax').innerHTML = m.partial
+    ? `<span>${x(S.age) > 48 ? fDT(m.prevStart) : ''}</span><span class="mk" style="left:${x(S.age)}%">Deal started ${fTime(tAt(S.age))}</span><span>Now</span>`
+    : `<span>Started ${fDT(S.age)}</span><span>Now · ${fDT(0)}</span>`;
 }
 
 /* ---------- funnels ---------- */
@@ -566,6 +620,11 @@ function drawFunnel(key, m) {
     h += '</div>';
   });
   el.innerHTML = h;
+  const endN = c[c.length - 1], e2e = endN / top, bi = drops.indexOf(maxDrop);
+  let ecmp = '';
+  if (p) { const pe = p[0] ? p[p.length - 1] / p[0] : 0, pts = (e2e - pe) * 100; ecmp = ` · was ${fP(pe)}, <b class="${Math.abs(pts) < .05 ? '' : pts > 0 ? 'good' : 'bad'}">${Math.abs(pts) < .05 ? 'no change' : `${arrow(pts)} ${Math.abs(pts).toFixed(1)} pts`}</b>`; }
+  $('kp-' + key).innerHTML = `<div><span class="kl">From first to last stage</span><span class="kv num">${fP(e2e)}</span><span class="ks num">${fN(endN)} of ${fN(top)}${ecmp}</span></div>
+    <div><span class="kl">Biggest loss</span><span class="kv num">${maxDrop ? fP(maxDrop / c[bi]) : 'None'}</span><span class="ks num">${maxDrop ? `${fN(maxDrop)} after “${F.names[bi]}”` : 'Nothing was lost in this period'}</span></div>`;
   shape(key);
   drawWhy(key, m, c, p);
 }
