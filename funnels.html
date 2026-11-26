@@ -120,45 +120,49 @@ button{cursor:pointer}
 .dsp button{height:26px;padding:0 10px;border-radius:6px;border:0;background:var(--blue10);color:var(--dp);font-size:12px;font-weight:500}
 .dsp button[aria-pressed="true"]{background:var(--dp);color:#fff;font-weight:600}
 
-.fn{display:flex;flex-direction:column;--nw:176px;--rw:176px}
-.phase{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--dp80);padding:10px 8px 6px}
-.phase:first-child{padding-top:0}
+.fn{position:relative;display:flex;flex-direction:column;--lw:188px;--rw:176px}
+.fhead,.step{display:grid;grid-template-columns:var(--lw) minmax(0,1fr) var(--rw);column-gap:16px}
+.fhead{padding:0 12px 10px;font-size:11px;color:var(--dp60)}
+.fhead span:nth-child(2){text-align:center}
+.fhead span:nth-child(3){padding-left:8px}
+.phase{display:flex;align-items:center;gap:8px;height:30px;padding:0 12px;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--dp80)}
 .pb{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:5px;background:var(--dp10);color:var(--dp);font-size:11px;font-weight:700;letter-spacing:0}
 .phase em{font-style:normal;font-weight:400;text-transform:none;letter-spacing:0;color:var(--dp60)}
-.step{border-radius:10px;padding:0 8px;cursor:pointer;transition:background .15s,box-shadow .15s}
+.step{grid-template-rows:40px 38px;padding:8px 12px 0;border-radius:10px;cursor:pointer;transition:background .15s,box-shadow .15s}
 .step:hover{background:var(--soft)}
 .step.on{background:var(--bg);box-shadow:inset 0 0 0 1px var(--dp20)}
-.step.last{cursor:default}
+.step.last{grid-template-rows:40px;padding-bottom:8px;cursor:default}
 .step.last:hover{background:transparent}
-.step.peer{background:var(--soft)}
-.r{display:grid;grid-template-columns:var(--nw) minmax(0,1fr) var(--rw);gap:12px;align-items:center}
-.r.st{min-height:44px}
-.nm{font-size:14px;text-align:right;display:flex;justify-content:flex-end;align-items:center;gap:6px;min-width:0}
-.step.on .nm{font-weight:600}
-.same{display:inline-flex;align-items:center;color:var(--dp60)}
-.barw{position:relative;height:28px}
-.bar{position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);border-radius:6px;display:grid;place-items:center;font-size:12px;font-weight:600;color:#fff;transition:width .5s var(--ease)}
-.bar.sA{background:var(--sA);color:var(--dp);box-shadow:inset 0 0 0 1px var(--sAline)}
-.bar.sB{background:var(--sB)}
-.bar.dB{background:var(--dB)}
-.bar.dC{background:var(--dC)}
-.step.on .bar{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--dp)}
-.outl{position:absolute;top:0;bottom:0;display:flex;align-items:center;font-size:12px;font-weight:600;color:var(--dp);transition:left .5s var(--ease)}
-.val{display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:0}
-.cnt{font-size:14px;font-weight:600;line-height:1.25}
-.cnt small{display:block;font-size:11px;font-weight:400;color:var(--dp60)}
-.chg{font-size:12px;font-weight:500;color:var(--dp80);white-space:nowrap}
-.r.dr{min-height:30px;align-items:stretch}
-.link{align-self:stretch;margin:-8px 0;transition:clip-path .5s var(--ease)}
-.fn.sup .link{background:var(--sLink)}
-.fn.dem .link{background:var(--dLink)}
-.dtx{align-self:center;font-size:12px;line-height:1.35;color:var(--red);padding:4px 0}
+.step.peer,.step.last.peer{background:var(--soft)}
+.lc{grid-column:1;grid-row:1/-1;min-width:0;display:flex;flex-direction:column}
+.nm{display:flex;align-items:center;gap:6px;font-size:12px;line-height:16px;color:var(--dp80);min-width:0}
+.nm span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.step.on .nm{color:var(--dp);font-weight:600}
+.same{display:inline-flex;color:var(--dp60);flex:none}
+.cnt{font-size:16px;line-height:24px;font-weight:700}
+.pv{font-size:11px;line-height:16px;color:var(--dp60);white-space:nowrap}
+.pv b{font-weight:500;color:var(--dp80)}
+.fc{grid-column:2;grid-row:1;position:relative;min-width:0}
+.pill{position:absolute;z-index:2;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border-radius:100px;padding:2px 9px;font-size:12px;line-height:16px;font-weight:600;color:var(--dp);box-shadow:0 1px 2px rgba(35,41,81,.18);white-space:nowrap}
+.pill.out{transform:translateY(-50%);background:none;box-shadow:none;padding:0}
+.dtx{grid-column:3;grid-row:2;align-self:center;padding-left:8px;font-size:12px;line-height:16px;color:var(--red);min-width:0}
+.rate{display:inline-block;margin-left:-8px;padding:2px 8px;border-radius:6px}
+.rate b{font-weight:600}
+.rate.big{background:var(--red10)}
 .dtx.zero{color:var(--dp60)}
-.dtx .big{display:inline-block;background:var(--red10);border-radius:6px;padding:2px 8px;margin-left:-8px;font-weight:600}
-.dtx small{display:block;font-size:11px;color:var(--dp60)}
+.dtx small{display:block;font-size:11px;line-height:16px;color:var(--dp60)}
 .dtx small b{font-weight:600}
 .dtx small b.bad{color:var(--red)}
 .dtx small b.good{color:var(--ok)}
+svg.shape{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:visible}
+.shape .flow{opacity:1}
+.sup .shape .flow{fill:var(--sLink)}
+.dem .shape .flow{fill:var(--dLink)}
+.shape .sA{fill:var(--sA);stroke:var(--sAline);stroke-width:1}
+.shape .sB{fill:var(--sB)}
+.shape .dB{fill:var(--dB)}
+.shape .dC{fill:var(--dC)}
+.shape .ring{fill:none;stroke:var(--dp);stroke-width:2}
 .fnote{display:flex;gap:8px;align-items:flex-start;margin:0;font-size:12px;color:var(--dp80)}
 .fnote .ic{margin-top:2px;color:var(--dp60)}
 
@@ -194,13 +198,18 @@ button{cursor:pointer}
 .proto b{color:var(--dp);font-weight:600}
 
 @container (max-width:560px){
-  .fn{--nw:128px;--rw:150px}
-  .nm{font-size:12px}
+  .fn{--lw:150px;--rw:150px}
+  .fhead,.step{column-gap:10px}
 }
 @container (max-width:440px){
-  .fn{--nw:96px;--rw:132px}
-  .r{gap:8px}
+  .fn{--lw:112px;--rw:112px}
   .phase em{display:none}
+  .step{grid-template-rows:40px 72px}
+  .step.last{grid-template-rows:40px 24px}
+  .nm span{white-space:normal}
+  .fhead span:nth-child(2){visibility:hidden}
+  .rate i{display:none}
+  .rate span{display:block}
 }
 @media (max-width:1100px){
   .cols{grid-template-columns:1fr}
@@ -535,30 +544,51 @@ function drawFunnel(key, m) {
   const drops = c.slice(0, -1).map((v, i) => v - c[i + 1]);
   const maxDrop = Math.max(...drops);
   if (S.auto[key]) S.sel[key] = maxDrop > 0 ? drops.indexOf(maxDrop) : 0;
-  const w = c.map(v => Math.max(v / top * 100, 5));
-  let h = '';
+  let h = `<div class="fhead"><span>Reached this stage</span><span>Share of the first stage</span><span>Lost before the next stage</span></div>`;
   c.forEach((v, i) => {
     if (F.phases[i]) { const ph = F.phases[i]; h += `<div class="phase"><span class="pb">${ph[0]}</span>Phase ${ph[0]} · ${ph[1]}${ph[2] ? ` <em>(${ph[2]})</em>` : ''}</div>`; }
-    const last = i === c.length - 1, share = v / top, inside = w[i] >= 16;
+    const last = i === c.length - 1, share = v / top;
     const shared = (key === 'sup' && last) || (key === 'dem' && i === 0);
     const ch = p ? chgVol(v, p[i], m) : null;
     h += `<div class="step${S.sel[key] === i ? ' on' : ''}${last ? ' last' : ''}" data-i="${i}" ${last ? '' : `role="button" tabindex="0" aria-pressed="${S.sel[key] === i}"`} ${shared ? 'data-shared' : ''}>
-      <div class="r st">
-        <div class="nm">${shared ? `<span class="same" title="${key === 'sup' ? 'The demand funnel starts from this number' : 'The supply funnel ends with this number'}"><svg class="ic"><use href="#i-link"/></svg></span>` : ''}<span>${F.names[i]}</span></div>
-        <div class="barw"><div class="bar ${F.cls[i]}" style="width:${w[i]}%">${inside ? Math.round(share * 100) + '%' : ''}</div>${inside ? '' : `<span class="outl" style="left:calc(50% + ${w[i] / 2}% + 8px)">${share < .01 && v ? '<1' : Math.round(share * 100)}%</span>`}</div>
-        <div class="val"><span class="cnt num" title="${v.toLocaleString('en-US')}">${fN(v)}${p ? `<small>prev ${fN(p[i])}</small>` : ''}</span>${ch === null ? '' : `<span class="chg num" title="Volume${m.partial ? ' per hour' : ''} compared with the previous period">${arrow(ch)} ${fP(Math.abs(ch))}</span>`}</div>
-      </div>`;
+      <div class="lc">
+        <div class="nm" title="${F.names[i]}">${shared ? `<span class="same" title="${key === 'sup' ? 'The demand funnel starts from this number' : 'The supply funnel ends with this number'}"><svg class="ic"><use href="#i-link"/></svg></span>` : ''}<span>${F.names[i]}</span></div>
+        <div class="cnt num" title="${v.toLocaleString('en-US')}">${fN(v)}</div>
+        ${p ? `<div class="pv num" title="Volume${m.partial ? ' per hour' : ''} compared with the previous period">prev ${fN(p[i])} · <b>${arrow(ch)} ${fP(Math.abs(ch))}</b></div>` : ''}
+      </div>
+      <div class="fc" data-share="${share}" data-cls="${F.cls[i]}"><span class="pill num">${share < .01 && v ? '<1' : Math.round(share * 100)}%</span></div>`;
     if (!last) {
-      const d = drops[i], rate = v ? d / v : 0, a1 = 50 - w[i] / 2, a2 = 50 + w[i] / 2, b1 = 50 - w[i + 1] / 2, b2 = 50 + w[i + 1] / 2;
+      const d = drops[i], rate = v ? d / v : 0;
       let cmp = '';
       if (p) { const pr = p[i] ? (p[i] - p[i + 1]) / p[i] : 0, pts = (rate - pr) * 100; cmp = `<small class="num">was ${fP(pr)} · <b class="${Math.abs(pts) < .05 ? '' : pts > 0 ? 'bad' : 'good'}">${Math.abs(pts) < .05 ? 'no change' : `${arrow(pts)} ${Math.abs(pts).toFixed(1)} pts`}</b></small>`; }
-      h += `<div class="r dr"><div></div><div class="link" style="clip-path:polygon(${a1}% 0,${a2}% 0,${b2}% 100%,${b1}% 100%)"></div>
-        <div class="dtx num${d ? '' : ' zero'}">${d ? `<span class="${d === maxDrop && d / v > .2 ? 'big' : ''}">↓ ${fP(rate)} · ${fN(d)} dropped</span>` : 'No drop'}${cmp}</div></div>`;
+      h += `<div class="dtx num${d ? '' : ' zero'}"><span class="rate${d && d === maxDrop && rate > .2 ? ' big' : ''}">${d ? `<b>↓ ${fP(rate)}</b><i> · </i><span>${fN(d)} dropped</span>` : 'No drop'}</span>${cmp}</div>`;
     }
     h += '</div>';
   });
   el.innerHTML = h;
+  shape(key);
   drawWhy(key, m, c, p);
+}
+/* one continuous funnel shape behind the rows, measured from the layout */
+function shape(key) {
+  const fn = $('fn-' + key), cells = [...fn.querySelectorAll('.fc')];
+  fn.querySelector('svg.shape')?.remove();
+  if (!cells.length) return;
+  const R = fn.getBoundingClientRect();
+  const g = cells.map(n => { const r = n.getBoundingClientRect(); return { n, cx: r.left - R.left + r.width / 2, t: r.top - R.top + 2, b: r.bottom - R.top - 2, hw: Math.max(+n.dataset.share * r.width / 2, 5) }; });
+  const f = x => x.toFixed(1);
+  let d = `M${f(g[0].cx - g[0].hw)} ${f(g[0].t)}L${f(g[0].cx + g[0].hw)} ${f(g[0].t)}`;
+  g.forEach((a, i) => { d += `L${f(a.cx + a.hw)} ${f(a.b)}`; const n = g[i + 1]; if (n) { const y = (a.b + n.t) / 2; d += `C${f(a.cx + a.hw)} ${f(y)} ${f(n.cx + n.hw)} ${f(y)} ${f(n.cx + n.hw)} ${f(n.t)}`; } });
+  for (let i = g.length - 1; i >= 0; i--) { const a = g[i]; d += `L${f(a.cx - a.hw)} ${f(a.b)}L${f(a.cx - a.hw)} ${f(a.t)}`; const n = g[i - 1]; if (n) { const y = (n.b + a.t) / 2; d += `C${f(a.cx - a.hw)} ${f(y)} ${f(n.cx - n.hw)} ${f(y)} ${f(n.cx - n.hw)} ${f(n.b)}`; } }
+  let svg = `<svg class="shape" aria-hidden="true"><path class="flow" d="${d}Z"/>`;
+  g.forEach(a => {
+    const on = a.n.parentElement.classList.contains('on'), rx = Math.min(8, a.hw);
+    svg += `<rect class="${a.n.dataset.cls}" x="${f(a.cx - a.hw)}" y="${f(a.t)}" width="${f(a.hw * 2)}" height="${f(a.b - a.t)}" rx="${rx}"/>`;
+    if (on) svg += `<rect class="ring" x="${f(a.cx - a.hw - 3)}" y="${f(a.t - 3)}" width="${f(a.hw * 2 + 6)}" height="${f(a.b - a.t + 6)}" rx="${rx + 3}"/>`;
+    const pill = a.n.firstElementChild; pill.classList.remove('out'); const out = a.hw * 2 < pill.offsetWidth + 8;
+    pill.classList.toggle('out', out); pill.style.left = out ? `calc(50% + ${f(a.hw + (on ? 11 : 8))}px)` : '';
+  });
+  fn.insertAdjacentHTML('beforeend', svg + '</svg>');
 }
 const GCOL = ['var(--g1)', 'var(--g2)', 'var(--g3)'];
 function drawWhy(key, m, c, p) {
@@ -612,6 +642,8 @@ $('age').addEventListener('click', e => {
   render();
 });
 
+new ResizeObserver(() => ['sup', 'dem'].forEach(shape)).observe($('fn-sup'));
+document.fonts && document.fonts.ready.then(() => ['sup', 'dem'].forEach(shape));
 function render() {
   const m = model();
   drawPresets(); drawBand(m); drawFunnel('sup', m); drawFunnel('dem', m);
