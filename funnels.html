@@ -18,8 +18,8 @@
   --red:#CF1818; --red10:#FAE8E8; --ok:#2B8A37;
   --bg:#F3F4F9; --surface:#FFFFFF; --soft:#F8F8F9;
   /* funnel colours, as in the product today */
-  --sA:#C3E6A6; --sAline:#8FCF63; --sB:#00A63E; --sLink:#E3F2DD;
-  --dB:#0087E8; --dC:#0064C8; --dLink:#D6E6F5;
+  --sA:#C3E6A6; --sAline:#8FCF63; --sB:#00A63E; --sLink:#DDF0D5;
+  --dB:#0087E8; --dC:#0064C8; --dLink:#CFE4F7;
   /* reason groups and period marks: steps of the product navy, so they never read as supply or demand */
   --g1:#232951; --g2:#8A8EA8; --g3:#C9CBD8;
   --font:"Kentledge","Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -37,7 +37,7 @@ button{cursor:pointer}
 .num{font-variant-numeric:tabular-nums}
 .ic{width:14px;height:14px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
-.page{max-width:1440px;margin:0 auto;padding:24px 16px}
+.page{max-width:2200px;margin:0 auto;padding:24px 16px}
 .block{background:var(--surface);border-radius:12px;padding:32px;display:flex;flex-direction:column;gap:24px}
 
 /* header */
@@ -139,7 +139,7 @@ input.in[type=number]::-webkit-outer-spin-button,input.in[type=number]::-webkit-
 .card-h h2{margin:0;font-size:16px;line-height:1.2;font-weight:900;display:flex;align-items:center;gap:8px}
 .ibtn{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:6px;border:0;background:transparent;color:var(--dp60)}
 .ibtn:hover,.ibtn[aria-expanded="true"]{background:var(--bg);color:var(--dp)}
-.about{margin:-8px 0 0;font-size:12px;line-height:17px;color:var(--dp80);max-width:72ch}
+.about{margin:-4px 0 0;font-size:12px;line-height:17px;color:var(--dp80);max-width:80ch;background:var(--soft);border-radius:8px;padding:10px 12px}
 .dsp{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--dp80)}
 .dsp button{height:26px;padding:0 10px;border-radius:6px;border:0;background:var(--blue10);color:var(--dp);font-size:12px;font-weight:500}
 .dsp button[aria-pressed="true"]{background:var(--dp);color:#fff;font-weight:600}
@@ -160,7 +160,7 @@ input.in[type=number]::-webkit-outer-spin-button,input.in[type=number]::-webkit-
 .pb{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:5px;background:var(--dp10);color:var(--dp);font-size:11px;font-weight:700;letter-spacing:0}
 .pb.sA{background:var(--sA);box-shadow:inset 0 0 0 1px var(--sAline)}.pb.sB{background:var(--sB);color:#fff}.pb.dB{background:var(--dB);color:#fff}.pb.dC{background:var(--dC);color:#fff}
 .phase em{font-style:normal;font-weight:400;text-transform:none;letter-spacing:0;color:var(--dp60)}
-.step{grid-template-rows:40px auto;padding:12px;border-radius:10px;cursor:pointer;transition:background .15s,box-shadow .15s}
+.step{grid-template-rows:44px auto;padding:12px;border-radius:10px;cursor:pointer;transition:background .15s,box-shadow .15s}
 .step+.step{margin-top:4px}
 .step:hover{background:var(--soft)}
 .step.on{background:var(--bg);box-shadow:inset 0 0 0 1px var(--dp20)}
@@ -240,6 +240,12 @@ svg.shape{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
 .proto{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px;padding:12px 16px;border:1px dashed var(--dp20);border-radius:12px;font-size:12px;color:var(--dp80)}
 .proto b{color:var(--dp);font-weight:600}
 
+@container (min-width:720px){
+  .fn{--lw:220px;--rw:212px}
+  .why-b{grid-template-columns:148px minmax(0,1fr);gap:28px}
+  .donut{width:132px;height:132px}
+  .donut-c b{font-size:18px}
+}
 @container (max-width:560px){
   .why-b{grid-template-columns:1fr;gap:16px}
   .dn{flex-direction:row;align-items:center;gap:16px}
@@ -345,9 +351,9 @@ svg.shape{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
     <div class="cols">
       <section class="card" id="card-sup">
         <div class="card-h">
-          <h2>Supply funnel</h2>
+          <h2>Supply funnel <button class="ibtn" aria-expanded="false" aria-controls="about-sup" aria-label="About the supply funnel"><svg class="ic"><use href="#i-info"/></svg></button></h2>
         </div>
-        <p class="about" id="about-sup">Ad requests on the deal's ad units, through the initial validation and the policy, consent and IVT checks, to valid opportunities for demand. Then the impressions that reached deal matching for this deal and passed it.</p>
+        <p class="about" id="about-sup" hidden>Ad requests on the deal's ad units, through the initial validation and the policy, consent and IVT checks, to valid opportunities for demand. Then the impressions that reached deal matching for this deal and passed it.</p>
         <div class="kp" id="kp-sup"></div>
         <div class="fn sup" id="fn-sup"></div>
         <p class="fnote"><svg class="ic"><use href="#i-info"/></svg>Phase A counts belong to the deal's ad units and are shared with every other deal on them. Do not add them up across deals.</p>
@@ -356,10 +362,10 @@ svg.shape{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
 
       <section class="card" id="card-dem">
         <div class="card-h">
-          <h2>Demand funnel</h2>
+          <h2>Demand funnel <button class="ibtn" aria-expanded="false" aria-controls="about-dem" aria-label="About the demand funnel"><svg class="ic"><use href="#i-info"/></svg></button></h2>
           <div class="dsp" role="group" aria-label="DSP"><span>DSP</span><button aria-pressed="true">All DSPs</button><button aria-pressed="false">OZ Internal Bidder DSP</button></div>
         </div>
-        <p class="about" id="about-dem">Starts where the supply funnel ends: impressions that passed deal matching. Then the bid requests sent to the deal's DSPs, their bid responses, HX auction wins and rendered impressions.</p>
+        <p class="about" id="about-dem" hidden>Starts where the supply funnel ends: impressions that passed deal matching. Then the bid requests sent to the deal's DSPs, their bid responses, HX auction wins and rendered impressions.</p>
         <div class="kp" id="kp-dem"></div>
         <div class="fn dem" id="fn-dem"></div>
         <p class="fnote"><svg class="ic"><use href="#i-info"/></svg>Phase C counts are per DSP: an impression sent to several DSPs is one bid request for each of them.</p>
@@ -672,7 +678,7 @@ function shape(key) {
   });
   fn.insertAdjacentHTML('beforeend', svg + '</svg>');
 }
-const GCOL = ['var(--g1)', 'var(--g2)', 'var(--g3)'];
+const GCOL = ['var(--dB)', 'var(--sB)', 'var(--g2)'];
 function drawWhy(key, m, c, p) {
   const F = FUN[key], i = S.sel[key], el = $('why-' + key);
   if (i === c.length - 1) { el.innerHTML = `<div class="why-h"><h3>“${F.names[i]}” is the end of the funnel</h3></div><p class="empty">Select an earlier stage to see why requests dropped there.</p>`; return; }
@@ -717,6 +723,10 @@ document.addEventListener('mousemove', e => {
 });
 
 /* ---------- small controls ---------- */
+document.querySelectorAll('.ibtn').forEach(b => b.addEventListener('click', () => {
+  const open = b.getAttribute('aria-expanded') !== 'true';
+  b.setAttribute('aria-expanded', open); $(b.getAttribute('aria-controls')).hidden = !open;
+}));
 document.querySelector('.dsp').addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return;
   document.querySelectorAll('.dsp button').forEach(x => x.setAttribute('aria-pressed', x === b));
