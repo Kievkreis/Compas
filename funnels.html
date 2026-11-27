@@ -18,7 +18,7 @@
   --red:#CF1818; --red10:#FAE8E8; --ok:#2B8A37;
   --bg:#F3F4F9; --surface:#FFFFFF; --soft:#F8F8F9;
   /* funnel colours, as in the product today */
-  --sA:#C3E6A6; --sAline:#8FCF63; --sB:#00A63E; --sLink:#DDF0D5;
+  --sA:#B4DF92; --sAline:#8FCF63; --sB:#00A63E; --sLink:#DDF0D5;
   --dB:#0087E8; --dC:#0064C8; --dLink:#CFE4F7;
   /* reason groups and period marks: steps of the product navy, so they never read as supply or demand */
   --g1:#232951; --g2:#8A8EA8; --g3:#C9CBD8;
@@ -156,7 +156,7 @@ input.in[type=number]::-webkit-outer-spin-button,input.in[type=number]::-webkit-
 .fhead{padding:0 12px 2px;font-size:11px;color:var(--dp60)}
 .fhead span:nth-child(2){text-align:center}
 .fhead span:nth-child(3){padding-left:8px}
-.phase{display:flex;align-items:center;gap:8px;height:30px;margin-top:14px;padding:0 12px;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--dp80)}
+.phase{display:flex;align-items:center;gap:8px;height:30px;margin:16px 0 6px;padding:0 12px;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--dp80)}
 .pb{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:5px;background:var(--dp10);color:var(--dp);font-size:11px;font-weight:700;letter-spacing:0}
 .pb.sA{background:var(--sA);box-shadow:inset 0 0 0 1px var(--sAline)}.pb.sB{background:var(--sB);color:#fff}.pb.dB{background:var(--dB);color:#fff}.pb.dC{background:var(--dC);color:#fff}
 .phase em{font-style:normal;font-weight:400;text-transform:none;letter-spacing:0;color:var(--dp60)}
@@ -194,7 +194,7 @@ svg.shape{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
 .shape .sB{fill:var(--sB)}
 .shape .dB{fill:var(--dB)}
 .shape .dC{fill:var(--dC)}
-.shape .ring{fill:none;stroke:var(--dp);stroke-width:2}
+.shape .lostcol{fill:var(--dp10);opacity:.45}
 .fnote{display:flex;gap:8px;align-items:flex-start;margin:0;font-size:12px;color:var(--dp80)}
 .fnote .ic{margin-top:2px;color:var(--dp60)}
 
@@ -657,24 +657,31 @@ function drawFunnel(key, m) {
   shape(key);
   drawWhy(key, m, c, p);
 }
-/* one continuous funnel shape behind the rows, measured from the layout */
+/* one continuous ribbon: a faint column marks 100%, the ribbon inside it shows what is left at each stage */
 function shape(key) {
   const fn = $('fn-' + key), cells = [...fn.querySelectorAll('.fc')];
   fn.querySelector('svg.shape')?.remove();
   if (!cells.length) return;
   const R = fn.getBoundingClientRect();
-  const g = cells.map(n => { const r = n.getBoundingClientRect(); return { n, cx: r.left - R.left + r.width / 2, t: r.top - R.top + 2, b: r.bottom - R.top - 2, hw: Math.max(+n.dataset.share * r.width / 2, 5) }; });
-  const f = x => x.toFixed(1);
-  let d = `M${f(g[0].cx - g[0].hw)} ${f(g[0].t)}L${f(g[0].cx + g[0].hw)} ${f(g[0].t)}`;
-  g.forEach((a, i) => { d += `L${f(a.cx + a.hw)} ${f(a.b)}`; const n = g[i + 1]; if (n) { const y = (a.b + n.t) / 2; d += `C${f(a.cx + a.hw)} ${f(y)} ${f(n.cx + n.hw)} ${f(y)} ${f(n.cx + n.hw)} ${f(n.t)}`; } });
-  for (let i = g.length - 1; i >= 0; i--) { const a = g[i]; d += `L${f(a.cx - a.hw)} ${f(a.b)}L${f(a.cx - a.hw)} ${f(a.t)}`; const n = g[i - 1]; if (n) { const y = (n.b + a.t) / 2; d += `C${f(a.cx - a.hw)} ${f(y)} ${f(n.cx - n.hw)} ${f(y)} ${f(n.cx - n.hw)} ${f(n.b)}`; } }
-  let svg = `<svg class="shape" aria-hidden="true"><path class="flow" d="${d}Z"/>`;
+  const g = cells.map(n => { const r = n.getBoundingClientRect(); return { n, cx: r.left - R.left + r.width / 2, t: r.top - R.top + 2, b: r.bottom - R.top - 2, hw: Math.max(+n.dataset.share * r.width / 2, 6), col: `var(--${n.dataset.cls})`, on: n.parentElement.classList.contains('on') }; });
+  const f = x => x.toFixed(1), top = g[0], end = g[g.length - 1], H = end.b - top.t;
+  const ribbon = grow => {
+    let d = `M${f(top.cx - top.hw - grow)} ${f(top.t)}L${f(top.cx + top.hw + grow)} ${f(top.t)}`;
+    g.forEach((a, i) => { d += `L${f(a.cx + a.hw + grow)} ${f(a.b)}`; const n = g[i + 1]; if (n) { const y = (a.b + n.t) / 2; d += `C${f(a.cx + a.hw + grow)} ${f(y)} ${f(n.cx + n.hw + grow)} ${f(y)} ${f(n.cx + n.hw + grow)} ${f(n.t)}`; } });
+    for (let i = g.length - 1; i >= 0; i--) { const a = g[i]; d += `L${f(a.cx - a.hw - grow)} ${f(a.b)}L${f(a.cx - a.hw - grow)} ${f(a.t)}`; const n = g[i - 1]; if (n) { const y = (n.b + a.t) / 2; d += `C${f(a.cx - a.hw - grow)} ${f(y)} ${f(n.cx - n.hw - grow)} ${f(y)} ${f(n.cx - n.hw - grow)} ${f(n.b)}`; } }
+    return d + 'Z';
+  };
+  const stops = g.map(a => `<stop offset="${f((a.t - top.t) / H * 100)}%" style="stop-color:${a.col}"/><stop offset="${f((a.b - top.t) / H * 100)}%" style="stop-color:${a.col}"/>`).join('');
+  let svg = `<svg class="shape" aria-hidden="true"><defs><linearGradient id="grad-${key}" gradientUnits="userSpaceOnUse" x1="0" y1="${f(top.t)}" x2="0" y2="${f(end.b)}">${stops}</linearGradient></defs>
+    <rect class="lostcol" x="${f(top.cx - top.hw)}" y="${f(top.t)}" width="${f(top.hw * 2)}" height="${f(H)}" rx="10"/>
+    <path d="${ribbon(7)}" fill="url(#grad-${key})" opacity=".18"/>
+    <path d="${ribbon(-2)}" fill="url(#grad-${key})" stroke="url(#grad-${key})" stroke-width="4" stroke-linejoin="round"/>`;
+  g.forEach((a, i) => { const n = g[i + 1]; if (n) { const y = (a.b + n.t) / 2, w = Math.max(a.hw, n.hw) + 9; svg += `<line x1="${f(a.cx - w)}" x2="${f(a.cx + w)}" y1="${f(y)}" y2="${f(y)}" stroke="#fff" stroke-width="2"/>`; } });
   g.forEach(a => {
-    const on = a.n.parentElement.classList.contains('on'), rx = Math.min(8, a.hw);
-    svg += `<rect class="${a.n.dataset.cls}" x="${f(a.cx - a.hw)}" y="${f(a.t)}" width="${f(a.hw * 2)}" height="${f(a.b - a.t)}" rx="${rx}"/>`;
-    if (on) svg += `<rect class="ring" x="${f(a.cx - a.hw - 3)}" y="${f(a.t - 3)}" width="${f(a.hw * 2 + 6)}" height="${f(a.b - a.t + 6)}" rx="${rx + 3}"/>`;
+    if (a.on) svg += `<rect x="${f(a.cx - a.hw - 5)}" y="${f(a.t - 5)}" width="${f(a.hw * 2 + 10)}" height="${f(a.b - a.t + 10)}" rx="13" fill="none" style="stroke:${a.col}" stroke-opacity=".4" stroke-width="4"/>
+      <rect x="${f(a.cx - a.hw)}" y="${f(a.t)}" width="${f(a.hw * 2)}" height="${f(a.b - a.t)}" rx="${Math.min(9, a.hw)}" style="fill:${a.col};stroke:#fff" stroke-width="2"/>`;
     const pill = a.n.firstElementChild; pill.classList.remove('out'); const out = a.hw * 2 < pill.offsetWidth + 8;
-    pill.classList.toggle('out', out); pill.style.left = out ? `calc(50% + ${f(a.hw + (on ? 11 : 8))}px)` : '';
+    pill.classList.toggle('out', out); pill.style.left = out ? `calc(50% + ${f(a.hw + (a.on ? 16 : 14))}px)` : '';
   });
   fn.insertAdjacentHTML('beforeend', svg + '</svg>');
 }
