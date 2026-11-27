@@ -112,6 +112,7 @@ input.in[type=number]::-webkit-outer-spin-button,input.in[type=number]::-webkit-
 .band{background:var(--soft);border:1px solid var(--dp10);border-radius:12px;padding:16px 20px;display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,420px);gap:12px 48px;align-items:center}
 .plines{display:flex;flex-direction:column;gap:6px;min-width:0}
 .pl{display:grid;grid-template-columns:84px 1fr;gap:8px;align-items:baseline;font-size:14px}
+.pl{cursor:help}
 .pl .k{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--dp80)}
 .pl .v{font-weight:600}
 .pl .v span{font-weight:400;color:var(--dp80)}
@@ -183,7 +184,7 @@ input.in[type=number]::-webkit-outer-spin-button,input.in[type=number]::-webkit-
 .dtx{grid-column:3;grid-row:1;align-self:center;padding-left:8px;font-size:12px;line-height:16px;color:var(--red);min-width:0}
 .rate{display:inline-block;margin-left:-8px;padding:2px 8px;border-radius:6px}
 .rate b{font-weight:600}
-.rate em{font-style:normal}
+.rate em{font-style:normal;display:none}
 .rate.big{background:var(--red10)}
 .dtx.zero{color:var(--dp60)}
 .dtx small{display:block;font-size:11px;line-height:16px;color:var(--dp60)}
@@ -206,7 +207,12 @@ svg.shape{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
 .why{background:var(--bg);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:14px}
 .why-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px 16px;flex-wrap:wrap}
 .why-h h3{margin:0;font-size:14px;font-weight:700}
-.why-h span{font-size:12px;color:var(--dp80)}
+.why-h span{font-size:12px;color:var(--dp80);margin-left:auto}
+.why-t{flex:none;margin:-2px -4px -2px 0}
+.why-t .ic{transition:transform .2s var(--ease)}
+.why-t[aria-expanded="true"] .ic{transform:rotate(180deg)}
+.why-s{margin:-6px 0 0;font-size:12px;color:var(--dp80)}
+.why-s b{font-weight:600;color:var(--dp)}
 .why-c{margin:-8px 0 0;font-size:12px;color:var(--dp80)}
 .why-c b{font-weight:600}
 .why-c b.bad{color:var(--red)}
@@ -220,6 +226,8 @@ svg.shape{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
 .donut svg{display:block;width:100%;height:100%}
 .donut-c{position:absolute;inset:0;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.2}
 .donut-c b{font-size:16px;font-weight:700}
+.donut-c b.long{font-size:13px}
+.donut-c b.xlong{font-size:11px}
 .donut-c span{font-size:11px;color:var(--dp80)}
 .lg{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--dp80)}
 .lg li{display:grid;grid-template-columns:10px minmax(0,1fr) auto;gap:6px;align-items:start;line-height:16px}
@@ -229,13 +237,13 @@ svg.shape{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
 .tip b{font-weight:600;color:var(--dp);margin-bottom:2px}
 .tip span{display:flex;align-items:center;gap:6px;font-variant-numeric:tabular-nums}
 .tip i{width:8px;height:8px;border-radius:2px;flex:none}
-.rs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
-.rs li{display:grid;grid-template-columns:16px minmax(0,1fr) 52px 40px;gap:4px 12px;align-items:baseline}
-.rs.cmp li{grid-template-columns:16px minmax(0,1fr) 52px 64px 40px}
+.rs{display:grid;grid-template-columns:16px minmax(0,1fr) auto auto;column-gap:12px;row-gap:12px;align-content:start;list-style:none;margin:0;padding:0}
+.rs.cmp{grid-template-columns:16px minmax(0,1fr) auto auto auto}
+.rs li{display:grid;grid-template-columns:subgrid;grid-column:1/-1;row-gap:4px;align-items:baseline}
 .rs .rk{font-size:12px;color:var(--dp60);text-align:right}
 .rs .rn{font-size:14px;min-width:0}
 .rs .rcode{grid-column:2/-1;min-width:0}
-.rs code{font:400 11px/16px var(--font);color:var(--dp80);background:var(--surface);border-radius:4px;padding:1px 6px;overflow-wrap:anywhere}
+.rs code{font:400 11px/16px var(--font);color:var(--dp60);overflow-wrap:anywhere}
 .rs .rc{font-size:14px;font-weight:600;text-align:right}
 .rs .rv{font-size:11px;color:var(--dp60);text-align:right;white-space:nowrap}
 .rs .rp{font-size:12px;color:var(--dp80);text-align:right}
@@ -248,7 +256,8 @@ svg.shape{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
 .proto b{color:var(--dp);font-weight:600}
 
 @container (min-width:720px){
-  .fn{--lw:220px;--rw:212px}
+  .fn{--lw:220px;--rw:224px}
+  .rate em{display:inline}
   .why-b{grid-template-columns:148px minmax(0,1fr);gap:28px}
   .donut{width:132px;height:132px}
   .donut-c b{font-size:18px}
@@ -261,7 +270,7 @@ svg.shape{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
   .fn{--lw:160px;--rw:136px}
   .fhead,.step{column-gap:10px}
   .nm span{white-space:normal}
-  .rate em,.phase em{display:none}
+  .phase em{display:none}
 }
 @container (max-width:440px){
   .fn{--lw:112px;--rw:112px}
@@ -370,7 +379,7 @@ svg.shape{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
       <section class="card" id="card-dem">
         <div class="card-h">
           <h2>Demand funnel <button class="ibtn" aria-expanded="false" aria-controls="about-dem" aria-label="About the demand funnel"><svg class="ic"><use href="#i-info"/></svg></button></h2>
-          <div class="dsp" role="group" aria-label="DSP"><span>DSP</span><button aria-pressed="true">All DSPs</button><button aria-pressed="false">OZ Internal Bidder DSP</button></div>
+          <div class="dsp" role="group" aria-label="DSP"><span data-tt="DSP|Demand-side platform: a buyer that bids on the impression.">DSP</span><button aria-pressed="true" data-tt="All DSPs|Demand numbers for every DSP on this deal, added together.">All DSPs</button><button aria-pressed="false" data-tt="OZ Internal Bidder DSP|Demand numbers for this DSP only.|It is the only DSP on this deal, so they match All DSPs.">OZ Internal Bidder DSP</button></div>
         </div>
         <p class="dspnote" id="dspnote" hidden><svg class="ic"><use href="#i-info"/></svg><span>Showing <b>OZ Internal Bidder DSP</b> only. It is the only DSP on this deal, so the numbers are the same as for All DSPs.</span></p>
         <p class="about" id="about-dem" hidden>Starts where the supply funnel ends: impressions that passed deal matching. Then the bid requests sent to the deal's DSPs, their bid responses, HX auction wins and rendered impressions.</p>
@@ -458,12 +467,12 @@ function reasons(key, drop, salt) {
 }
 
 /* ---------- formatting ---------- */
-const fN = n => n >= 1e6 ? (n / 1e6).toFixed(2) + 'M' : n >= 1e4 ? (n / 1e3).toFixed(1) + 'K' : n.toLocaleString('en-US');
+const fN = n => n.toLocaleString('en-US');
 const fP = x => (x * 100).toFixed(1) + '%';
 const arrow = x => x > 0 ? '▲' : x < 0 ? '▼' : '●';
 
 /* ---------- state ---------- */
-const S = { age: 963, len: 168, end: 0, preset: '7d', cmp: false, sel: { sup: null, dem: null }, auto: { sup: true, dem: true } };
+const S = { age: 963, len: 168, end: 0, preset: '7d', cmp: false, sel: { sup: null, dem: null }, auto: { sup: true, dem: true }, why: { sup: true, dem: true } };
 const PRESETS = [['1h', 1], ['24h', 24], ['7d', 168], ['30d', 720]];
 const $ = id => document.getElementById(id);
 
@@ -586,10 +595,10 @@ document.addEventListener('mousedown', e => { if (!$('pop').hidden && !e.target.
 /* ---------- period band ---------- */
 function drawBand(m) {
   const whole = S.len >= S.age && S.end === 0;
-  let h = `<div class="pl"><span class="k"><i class="dot"></i>${m.on ? 'Current' : 'Period'}</span><span class="v">${fRange(m.a, m.b)} <span>· ${fDur(S.len)}${whole ? ' · whole deal' : ''}</span></span></div>`;
+  let h = `<div class="pl" data-tt="${m.on ? 'Current period|The period you selected.|All main numbers on this page are for it.' : 'Selected period|All numbers on this page are for this time range.|Times are in UTC and end at the last complete hour.'}"><span class="k"><i class="dot"></i>${m.on ? 'Current' : 'Period'}</span><span class="v">${fRange(m.a, m.b)} <span>· ${fDur(S.len)}${whole ? ' · whole deal' : ''}</span></span></div>`;
   if (m.on) {
     const ps = Math.min(m.prevStart, S.age);
-    h += `<div class="pl"><span class="k"><i class="dot prev"></i>Previous</span><span class="v">${fRange(ps, m.a)} <span>· ${m.partial ? `${fDur(m.prevHours)} of ${fDur(S.len)}` : fDur(S.len)}</span></span></div>`;
+    h += `<div class="pl" data-tt="Previous period|The same length of time right before the current period.|It gives the “prev” numbers and the change values."><span class="k"><i class="dot prev"></i>Previous</span><span class="v">${fRange(ps, m.a)} <span>· ${m.partial ? `${fDur(m.prevHours)} of ${fDur(S.len)}` : fDur(S.len)}</span></span></div>`;
   }
   $('plines').innerHTML = h;
 
@@ -692,7 +701,8 @@ function drawWhy(key, m, c, p) {
   const F = FUN[key], i = S.sel[key], el = $('why-' + key);
   if (i === c.length - 1) { el.innerHTML = `<div class="why-h"><h3>“${F.names[i]}” is the end of the funnel</h3></div><p class="empty">Select an earlier stage to see why requests dropped there.</p>`; return; }
   const d = c[i] - c[i + 1], rate = c[i] ? d / c[i] : 0;
-  let h = `<div class="why-h"><h3>${d ? `Why ${fN(d)} dropped after “${F.names[i]}”` : `Nothing dropped after “${F.names[i]}”`}</h3><span class="num">${fP(rate)} of ${fN(c[i])}</span></div>`;
+  const open = S.why[key];
+  let h = `<div class="why-h"><h3>${d ? `Why ${fN(d)} dropped after “${F.names[i]}”` : `Nothing dropped after “${F.names[i]}”`}</h3><span class="num">${fP(rate)} of ${fN(c[i])}</span>${d ? `<button class="ibtn why-t" data-why="${key}" aria-expanded="${open}" aria-label="${open ? 'Hide' : 'Show'} the reasons"><svg class="ic"><use href="#i-chev"/></svg></button>` : ''}</div>`;
   let pd = 0;
   if (p) {
     pd = p[i] - p[i + 1]; const pr = p[i] ? pd / p[i] : 0, pts = (rate - pr) * 100, vol = pd ? chgVol(d, pd, m) : null;
@@ -703,7 +713,8 @@ function drawWhy(key, m, c, p) {
   const groups = [...new Set(rs.map(r => r.group))], gs = groups.map(g => rs.filter(r => r.group === g).reduce((a, r) => a + r.n, 0));
   const R = 46, CIRC = 2 * Math.PI * R; let off = 0;
   const arcs = gs.map((n, k) => { const len = n / d * CIRC, gap = groups.length > 1 ? 2 : 0, a = `<circle class="arc" data-tt="${groups[k]}|${fN(n)} dropped|${fP(n / d)} of this loss" cx="60" cy="60" r="${R}" fill="none" stroke="${GCOL[k % 3]}" stroke-width="16" stroke-dasharray="${Math.max(len - gap, 1)} ${CIRC}" stroke-dashoffset="${-off}" transform="rotate(-90 60 60)"/>`; off += len; return a; }).join('');
-  h += `<div class="why-b"><div class="dn"><div class="donut"><svg viewBox="0 0 120 120" aria-hidden="true">${arcs}</svg><div class="donut-c"><b class="num">${fN(d)}</b><span>dropped</span></div></div>
+  if (!open) { const t = rs[0]; el.innerHTML = h + `<p class="why-s num">Main reason: <b>${t.name}</b>, ${fN(t.n)} (${fP(t.n / d)})${rs.length > 1 ? `. ${rs.length - 1} more reason${rs.length > 2 ? 's' : ''}.` : '.'}</p>`; return; }
+  h += `<div class="why-b"><div class="dn"><div class="donut"><svg viewBox="0 0 120 120" aria-hidden="true">${arcs}</svg><div class="donut-c"><b class="num${fN(d).length > 8 ? ' xlong' : fN(d).length > 7 ? ' long' : ''}">${fN(d)}</b><span>dropped</span></div></div>
       <ul class="lg">${groups.map((g, k) => `<li><i style="background:${GCOL[k % 3]}"></i><span>${g}</span><b class="num">${fP(gs[k] / d)}</b></li>`).join('')}</ul></div>
     <ol class="rs${prs ? ' cmp' : ''}">${rs.map((r, k) => `<li><span class="rk num">${k + 1}</span>
     <span class="rn">${r.name}</span>
@@ -741,7 +752,8 @@ document.addEventListener('mousemove', e => {
 });
 
 /* ---------- small controls ---------- */
-document.querySelectorAll('.ibtn').forEach(b => b.addEventListener('click', () => {
+document.addEventListener('click', e => { const b = e.target.closest('.why-t'); if (!b) return; S.why[b.dataset.why] = !S.why[b.dataset.why]; render(); document.querySelector(`.why-t[data-why="${b.dataset.why}"]`)?.focus(); });
+document.querySelectorAll('.ibtn[aria-controls]').forEach(b => b.addEventListener('click', () => {
   const open = b.getAttribute('aria-expanded') !== 'true';
   b.setAttribute('aria-expanded', open); $(b.getAttribute('aria-controls')).hidden = !open;
 }));
