@@ -156,9 +156,10 @@ input.in[type=number]::-webkit-outer-spin-button,input.in[type=number]::-webkit-
 .fhead{padding:0 12px 2px;font-size:11px;color:var(--dp60)}
 .fhead span:nth-child(2){text-align:center}
 .fhead span:nth-child(3){padding-left:8px}
-.phase{display:flex;align-items:center;gap:8px;height:30px;margin:16px 0 6px;padding:0 12px;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--dp80)}
-.pb{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:5px;background:var(--dp10);color:var(--dp);font-size:11px;font-weight:700;letter-spacing:0}
+.phase{display:flex;align-items:center;gap:8px;height:18px;margin:20px 0 10px;padding:0 12px;line-height:18px;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--dp80)}
+.pb{display:inline-flex;align-items:center;justify-content:center;flex:none;width:18px;height:18px;line-height:18px;border-radius:5px;background:var(--dp10);color:var(--dp);font-size:11px;font-weight:700;letter-spacing:0}
 .pb.sA{background:var(--sA);box-shadow:inset 0 0 0 1px var(--sAline)}.pb.sB{background:var(--sB);color:#fff}.pb.dB{background:var(--dB);color:#fff}.pb.dC{background:var(--dC);color:#fff}
+.phase.div::after{content:"";flex:1;min-width:24px;border-top:1px dashed var(--dp20);margin-left:4px}
 .phase em{font-style:normal;font-weight:400;text-transform:none;letter-spacing:0;color:var(--dp60)}
 .step{grid-template-rows:44px auto;padding:12px;border-radius:10px;cursor:pointer;transition:background .15s,box-shadow .15s}
 .step+.step{margin-top:4px}
@@ -190,11 +191,11 @@ svg.shape{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
 .shape .flow{opacity:1}
 .sup .shape .flow{fill:var(--sLink)}
 .dem .shape .flow{fill:var(--dLink)}
-.shape .sA{fill:var(--sA);stroke:var(--sAline);stroke-width:1}
+.shape .sA{fill:var(--sA)}
 .shape .sB{fill:var(--sB)}
 .shape .dB{fill:var(--dB)}
 .shape .dC{fill:var(--dC)}
-.shape .lostcol{fill:var(--dp10);opacity:.45}
+.shape .bar{stroke:#fff;stroke-width:2;paint-order:stroke}
 .fnote{display:flex;gap:8px;align-items:flex-start;margin:0;font-size:12px;color:var(--dp80)}
 .fnote .ic{margin-top:2px;color:var(--dp60)}
 
@@ -628,7 +629,7 @@ function drawFunnel(key, m) {
   if (S.auto[key]) S.sel[key] = maxDrop > 0 ? drops.indexOf(maxDrop) : 0;
   let h = `<div class="fhead"><span>Reached this stage</span><span>Share of the first stage</span><span>Lost before the next stage</span></div>`;
   c.forEach((v, i) => {
-    if (F.phases[i]) { const ph = F.phases[i]; h += `<div class="phase"><span class="pb ${F.cls[i]}">${ph[0]}</span>Phase ${ph[0]} · ${ph[1]}${ph[2] ? ` <em>(${ph[2]})</em>` : ''}</div>`; }
+    if (F.phases[i]) { const ph = F.phases[i]; h += `<div class="phase${i ? ' div' : ''}"><span class="pb ${F.cls[i]}">${ph[0]}</span>Phase ${ph[0]} · ${ph[1]}${ph[2] ? ` <em>(${ph[2]})</em>` : ''}</div>`; }
     const last = i === c.length - 1, share = v / top;
     const shared = (key === 'sup' && last) || (key === 'dem' && i === 0);
     const ch = p ? chgVol(v, p[i], m) : null;
@@ -657,31 +658,24 @@ function drawFunnel(key, m) {
   shape(key);
   drawWhy(key, m, c, p);
 }
-/* one continuous ribbon: a faint column marks 100%, the ribbon inside it shows what is left at each stage */
+/* one continuous funnel shape behind the rows, measured from the layout */
 function shape(key) {
   const fn = $('fn-' + key), cells = [...fn.querySelectorAll('.fc')];
   fn.querySelector('svg.shape')?.remove();
   if (!cells.length) return;
   const R = fn.getBoundingClientRect();
-  const g = cells.map(n => { const r = n.getBoundingClientRect(); return { n, cx: r.left - R.left + r.width / 2, t: r.top - R.top + 2, b: r.bottom - R.top - 2, hw: Math.max(+n.dataset.share * r.width / 2, 6), col: `var(--${n.dataset.cls})`, on: n.parentElement.classList.contains('on') }; });
-  const f = x => x.toFixed(1), top = g[0], end = g[g.length - 1], H = end.b - top.t;
-  const ribbon = grow => {
-    let d = `M${f(top.cx - top.hw - grow)} ${f(top.t)}L${f(top.cx + top.hw + grow)} ${f(top.t)}`;
-    g.forEach((a, i) => { d += `L${f(a.cx + a.hw + grow)} ${f(a.b)}`; const n = g[i + 1]; if (n) { const y = (a.b + n.t) / 2; d += `C${f(a.cx + a.hw + grow)} ${f(y)} ${f(n.cx + n.hw + grow)} ${f(y)} ${f(n.cx + n.hw + grow)} ${f(n.t)}`; } });
-    for (let i = g.length - 1; i >= 0; i--) { const a = g[i]; d += `L${f(a.cx - a.hw - grow)} ${f(a.b)}L${f(a.cx - a.hw - grow)} ${f(a.t)}`; const n = g[i - 1]; if (n) { const y = (n.b + a.t) / 2; d += `C${f(a.cx - a.hw - grow)} ${f(y)} ${f(n.cx - n.hw - grow)} ${f(y)} ${f(n.cx - n.hw - grow)} ${f(n.b)}`; } }
-    return d + 'Z';
-  };
-  const stops = g.map(a => `<stop offset="${f((a.t - top.t) / H * 100)}%" style="stop-color:${a.col}"/><stop offset="${f((a.b - top.t) / H * 100)}%" style="stop-color:${a.col}"/>`).join('');
-  let svg = `<svg class="shape" aria-hidden="true"><defs><linearGradient id="grad-${key}" gradientUnits="userSpaceOnUse" x1="0" y1="${f(top.t)}" x2="0" y2="${f(end.b)}">${stops}</linearGradient></defs>
-    <rect class="lostcol" x="${f(top.cx - top.hw)}" y="${f(top.t)}" width="${f(top.hw * 2)}" height="${f(H)}" rx="10"/>
-    <path d="${ribbon(7)}" fill="url(#grad-${key})" opacity=".18"/>
-    <path d="${ribbon(-2)}" fill="url(#grad-${key})" stroke="url(#grad-${key})" stroke-width="4" stroke-linejoin="round"/>`;
-  g.forEach((a, i) => { const n = g[i + 1]; if (n) { const y = (a.b + n.t) / 2, w = Math.max(a.hw, n.hw) + 9; svg += `<line x1="${f(a.cx - w)}" x2="${f(a.cx + w)}" y1="${f(y)}" y2="${f(y)}" stroke="#fff" stroke-width="2"/>`; } });
+  const g = cells.map(n => { const r = n.getBoundingClientRect(); return { n, cx: r.left - R.left + r.width / 2, t: r.top - R.top + 2, b: r.bottom - R.top - 2, hw: Math.max(+n.dataset.share * r.width / 2, 5) }; });
+  const f = x => x.toFixed(1);
+  let d = `M${f(g[0].cx - g[0].hw)} ${f(g[0].t)}L${f(g[0].cx + g[0].hw)} ${f(g[0].t)}`;
+  g.forEach((a, i) => { d += `L${f(a.cx + a.hw)} ${f(a.b)}`; const n = g[i + 1]; if (n) { const y = (a.b + n.t) / 2; d += `C${f(a.cx + a.hw)} ${f(y)} ${f(n.cx + n.hw)} ${f(y)} ${f(n.cx + n.hw)} ${f(n.t)}`; } });
+  for (let i = g.length - 1; i >= 0; i--) { const a = g[i]; d += `L${f(a.cx - a.hw)} ${f(a.b)}L${f(a.cx - a.hw)} ${f(a.t)}`; const n = g[i - 1]; if (n) { const y = (n.b + a.t) / 2; d += `C${f(a.cx - a.hw)} ${f(y)} ${f(n.cx - n.hw)} ${f(y)} ${f(n.cx - n.hw)} ${f(n.b)}`; } }
+  let svg = `<svg class="shape" aria-hidden="true"><path class="flow" d="${d}Z"/>`;
   g.forEach(a => {
-    if (a.on) svg += `<rect x="${f(a.cx - a.hw - 5)}" y="${f(a.t - 5)}" width="${f(a.hw * 2 + 10)}" height="${f(a.b - a.t + 10)}" rx="13" fill="none" style="stroke:${a.col}" stroke-opacity=".4" stroke-width="4"/>
-      <rect x="${f(a.cx - a.hw)}" y="${f(a.t)}" width="${f(a.hw * 2)}" height="${f(a.b - a.t)}" rx="${Math.min(9, a.hw)}" style="fill:${a.col};stroke:#fff" stroke-width="2"/>`;
+    const on = a.n.parentElement.classList.contains('on'), rx = Math.min(9, a.hw), col = `var(--${a.n.dataset.cls})`;
+    if (on) svg += `<rect x="${f(a.cx - a.hw - 5)}" y="${f(a.t - 5)}" width="${f(a.hw * 2 + 10)}" height="${f(a.b - a.t + 10)}" rx="${rx + 5}" fill="none" style="stroke:${col}" stroke-opacity=".4" stroke-width="4"/>`;
+    svg += `<rect class="bar ${a.n.dataset.cls}" x="${f(a.cx - a.hw)}" y="${f(a.t)}" width="${f(a.hw * 2)}" height="${f(a.b - a.t)}" rx="${rx}"/>`;
     const pill = a.n.firstElementChild; pill.classList.remove('out'); const out = a.hw * 2 < pill.offsetWidth + 8;
-    pill.classList.toggle('out', out); pill.style.left = out ? `calc(50% + ${f(a.hw + (a.on ? 16 : 14))}px)` : '';
+    pill.classList.toggle('out', out); pill.style.left = out ? `calc(50% + ${f(a.hw + (on ? 14 : 10))}px)` : '';
   });
   fn.insertAdjacentHTML('beforeend', svg + '</svg>');
 }
