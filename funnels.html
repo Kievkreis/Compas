@@ -139,7 +139,7 @@ input.in[type=number]::-webkit-outer-spin-button,input.in[type=number]::-webkit-
 .card-h h2{margin:0;font-size:16px;line-height:1.2;font-weight:900;display:flex;align-items:center;gap:8px}
 .ibtn{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:6px;border:0;background:transparent;color:var(--dp60)}
 .ibtn:hover,.ibtn[aria-expanded="true"]{background:var(--bg);color:var(--dp)}
-.about{margin:0;font-size:12px;color:var(--dp80);background:var(--soft);border-radius:8px;padding:10px 12px}
+.about{margin:-8px 0 0;font-size:12px;line-height:17px;color:var(--dp80);max-width:72ch}
 .dsp{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--dp80)}
 .dsp button{height:26px;padding:0 10px;border-radius:6px;border:0;background:var(--blue10);color:var(--dp);font-size:12px;font-weight:500}
 .dsp button[aria-pressed="true"]{background:var(--dp);color:#fff;font-weight:600}
@@ -153,18 +153,18 @@ input.in[type=number]::-webkit-outer-spin-button,input.in[type=number]::-webkit-
 .ks b{font-weight:600}.ks b.bad{color:var(--red)}.ks b.good{color:var(--ok)}
 .fn{position:relative;display:flex;flex-direction:column;--lw:188px;--rw:176px}
 .fhead,.step{display:grid;grid-template-columns:var(--lw) minmax(0,1fr) var(--rw);column-gap:16px}
-.fhead{padding:0 12px 10px;font-size:11px;color:var(--dp60)}
+.fhead{padding:0 12px 2px;font-size:11px;color:var(--dp60)}
 .fhead span:nth-child(2){text-align:center}
 .fhead span:nth-child(3){padding-left:8px}
-.phase{display:flex;align-items:center;gap:8px;height:30px;padding:0 12px;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--dp80)}
+.phase{display:flex;align-items:center;gap:8px;height:30px;margin-top:14px;padding:0 12px;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--dp80)}
 .pb{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:5px;background:var(--dp10);color:var(--dp);font-size:11px;font-weight:700;letter-spacing:0}
+.pb.sA{background:var(--sA);box-shadow:inset 0 0 0 1px var(--sAline)}.pb.sB{background:var(--sB);color:#fff}.pb.dB{background:var(--dB);color:#fff}.pb.dC{background:var(--dC);color:#fff}
 .phase em{font-style:normal;font-weight:400;text-transform:none;letter-spacing:0;color:var(--dp60)}
-.step{grid-template-rows:40px 38px;padding:8px 12px 0;border-radius:10px;cursor:pointer;transition:background .15s,box-shadow .15s}
+.step{grid-template-rows:40px auto;padding:12px;border-radius:10px;cursor:pointer;transition:background .15s,box-shadow .15s}
+.step+.step{margin-top:4px}
 .step:hover{background:var(--soft)}
 .step.on{background:var(--bg);box-shadow:inset 0 0 0 1px var(--dp20)}
-.step.last{grid-template-rows:40px auto;padding-bottom:8px;cursor:default}
-.step.last:hover{background:transparent}
-.step.peer,.step.last.peer{background:var(--soft)}
+.step.peer{background:var(--soft)}
 .lc{grid-column:1;grid-row:1/-1;min-width:0;display:flex;flex-direction:column}
 .nm{display:flex;align-items:center;gap:6px;font-size:12px;line-height:16px;color:var(--dp80);min-width:0}
 .nm span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -176,7 +176,7 @@ input.in[type=number]::-webkit-outer-spin-button,input.in[type=number]::-webkit-
 .fc{grid-column:2;grid-row:1;position:relative;min-width:0}
 .pill{position:absolute;z-index:2;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border-radius:100px;padding:2px 9px;font-size:12px;line-height:16px;font-weight:600;color:var(--dp);box-shadow:0 1px 2px rgba(35,41,81,.18);white-space:nowrap}
 .pill.out{transform:translateY(-50%);background:none;box-shadow:none;padding:0}
-.dtx{grid-column:3;grid-row:2;align-self:center;padding-left:8px;font-size:12px;line-height:16px;color:var(--red);min-width:0}
+.dtx{grid-column:3;grid-row:1;align-self:center;padding-left:8px;font-size:12px;line-height:16px;color:var(--red);min-width:0}
 .rate{display:inline-block;margin-left:-8px;padding:2px 8px;border-radius:6px}
 .rate b{font-weight:600}
 .rate em{font-style:normal}
@@ -207,18 +207,28 @@ svg.shape{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
 .why-c b{font-weight:600}
 .why-c b.bad{color:var(--red)}
 .why-c b.good{color:var(--ok)}
-.split{display:flex;height:10px;border-radius:5px;overflow:hidden;gap:2px}
-.split i{display:block;min-width:4px;transition:flex-grow .5s var(--ease)}
-.lg{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--dp80)}
-.lg span{display:inline-flex;align-items:center;gap:6px}
+.why-b{display:grid;grid-template-columns:124px minmax(0,1fr);gap:20px;align-items:start}
+.dn{display:flex;flex-direction:column;gap:12px;min-width:0}
+.donut{position:relative;width:112px;height:112px;margin:0 auto}
+.donut svg{display:block;width:100%;height:100%}
+.donut-c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.2}
+.donut-c b{font-size:16px;font-weight:700}
+.donut-c span{font-size:11px;color:var(--dp80)}
+.lg{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--dp80)}
+.lg li{display:grid;grid-template-columns:10px minmax(0,1fr) auto;gap:6px;align-items:center}
 .lg i{width:10px;height:10px;border-radius:3px}
 .lg b{font-weight:600;color:var(--dp)}
+.tip{position:fixed;z-index:30;pointer-events:none;background:var(--surface);border:1px solid var(--dp20);border-radius:8px;padding:8px 12px;display:flex;flex-direction:column;gap:3px;font-size:12px;line-height:16px;color:var(--dp80);box-shadow:0 6px 20px rgba(35,41,81,.14);white-space:nowrap}
+.tip b{font-weight:600;color:var(--dp);margin-bottom:2px}
+.tip span{display:flex;align-items:center;gap:6px;font-variant-numeric:tabular-nums}
+.tip i{width:8px;height:8px;border-radius:2px;flex:none}
 .rs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
-.rs li{display:grid;grid-template-columns:16px minmax(0,1fr) 64px 48px;gap:4px 12px;align-items:baseline}
-.rs.cmp li{grid-template-columns:16px minmax(0,1fr) 64px 72px 48px}
+.rs li{display:grid;grid-template-columns:16px minmax(0,1fr) 52px 40px;gap:4px 12px;align-items:baseline}
+.rs.cmp li{grid-template-columns:16px minmax(0,1fr) 52px 64px 40px}
 .rs .rk{font-size:12px;color:var(--dp60);text-align:right}
-.rs .rn{font-size:14px;display:flex;flex-direction:column;gap:1px;min-width:0}
-.rs code{font:400 11px/16px var(--font);color:var(--dp60);overflow-wrap:anywhere}
+.rs .rn{font-size:14px;min-width:0}
+.rs .rcode{grid-column:2/-1;min-width:0}
+.rs code{font:400 11px/16px var(--font);color:var(--dp80);background:var(--surface);border-radius:4px;padding:1px 6px;overflow-wrap:anywhere}
 .rs .rc{font-size:14px;font-weight:600;text-align:right}
 .rs .rv{font-size:11px;color:var(--dp60);text-align:right;white-space:nowrap}
 .rs .rp{font-size:12px;color:var(--dp80);text-align:right}
@@ -231,6 +241,10 @@ svg.shape{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
 .proto b{color:var(--dp);font-weight:600}
 
 @container (max-width:560px){
+  .why-b{grid-template-columns:1fr;gap:16px}
+  .dn{flex-direction:row;align-items:center;gap:16px}
+  .donut{margin:0;flex:none}
+  .lg{flex:1}
   .fn{--lw:160px;--rw:136px}
   .fhead,.step{column-gap:10px}
   .nm span{white-space:normal}
@@ -239,8 +253,6 @@ svg.shape{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
 @container (max-width:440px){
   .fn{--lw:112px;--rw:112px}
   .phase em{display:none}
-  .step{grid-template-rows:40px 72px}
-  .step.last{grid-template-rows:40px 24px}
   .nm span{white-space:normal}
   .fhead span:nth-child(2){visibility:hidden}
   .rate i{display:none}
@@ -333,9 +345,9 @@ svg.shape{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
     <div class="cols">
       <section class="card" id="card-sup">
         <div class="card-h">
-          <h2>Supply funnel <button class="ibtn" aria-expanded="false" aria-controls="about-sup" aria-label="About the supply funnel"><svg class="ic"><use href="#i-info"/></svg></button></h2>
+          <h2>Supply funnel</h2>
         </div>
-        <p class="about" id="about-sup" hidden>Ad requests on the deal's ad units, through the initial validation and the policy, consent and IVT checks, to valid opportunities for demand. Then the impressions that reached deal matching for this deal and passed it.</p>
+        <p class="about" id="about-sup">Ad requests on the deal's ad units, through the initial validation and the policy, consent and IVT checks, to valid opportunities for demand. Then the impressions that reached deal matching for this deal and passed it.</p>
         <div class="kp" id="kp-sup"></div>
         <div class="fn sup" id="fn-sup"></div>
         <p class="fnote"><svg class="ic"><use href="#i-info"/></svg>Phase A counts belong to the deal's ad units and are shared with every other deal on them. Do not add them up across deals.</p>
@@ -344,10 +356,10 @@ svg.shape{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
 
       <section class="card" id="card-dem">
         <div class="card-h">
-          <h2>Demand funnel <button class="ibtn" aria-expanded="false" aria-controls="about-dem" aria-label="About the demand funnel"><svg class="ic"><use href="#i-info"/></svg></button></h2>
+          <h2>Demand funnel</h2>
           <div class="dsp" role="group" aria-label="DSP"><span>DSP</span><button aria-pressed="true">All DSPs</button><button aria-pressed="false">OZ Internal Bidder DSP</button></div>
         </div>
-        <p class="about" id="about-dem" hidden>Starts where the supply funnel ends: impressions that passed deal matching. Then the bid requests sent to the deal's DSPs, their bid responses, HX auction wins and rendered impressions.</p>
+        <p class="about" id="about-dem">Starts where the supply funnel ends: impressions that passed deal matching. Then the bid requests sent to the deal's DSPs, their bid responses, HX auction wins and rendered impressions.</p>
         <div class="kp" id="kp-dem"></div>
         <div class="fn dem" id="fn-dem"></div>
         <p class="fnote"><svg class="ic"><use href="#i-info"/></svg>Phase C counts are per DSP: an impression sent to several DSPs is one bid request for each of them.</p>
@@ -610,23 +622,24 @@ function drawFunnel(key, m) {
   if (S.auto[key]) S.sel[key] = maxDrop > 0 ? drops.indexOf(maxDrop) : 0;
   let h = `<div class="fhead"><span>Reached this stage</span><span>Share of the first stage</span><span>Lost before the next stage</span></div>`;
   c.forEach((v, i) => {
-    if (F.phases[i]) { const ph = F.phases[i]; h += `<div class="phase"><span class="pb">${ph[0]}</span>Phase ${ph[0]} · ${ph[1]}${ph[2] ? ` <em>(${ph[2]})</em>` : ''}</div>`; }
+    if (F.phases[i]) { const ph = F.phases[i]; h += `<div class="phase"><span class="pb ${F.cls[i]}">${ph[0]}</span>Phase ${ph[0]} · ${ph[1]}${ph[2] ? ` <em>(${ph[2]})</em>` : ''}</div>`; }
     const last = i === c.length - 1, share = v / top;
     const shared = (key === 'sup' && last) || (key === 'dem' && i === 0);
     const ch = p ? chgVol(v, p[i], m) : null;
-    h += `<div class="step${S.sel[key] === i ? ' on' : ''}${last ? ' last' : ''}" data-i="${i}" ${last ? '' : `role="button" tabindex="0" aria-pressed="${S.sel[key] === i}"`} ${shared ? 'data-shared' : ''}>
+    h += `<div class="step${S.sel[key] === i ? ' on' : ''}${last ? ' last' : ''}" data-i="${i}" role="button" tabindex="0" aria-pressed="${S.sel[key] === i}" ${shared ? 'data-shared' : ''}>
       <div class="lc">
         <div class="nm" title="${F.names[i]}">${shared ? `<span class="same" title="${key === 'sup' ? 'The demand funnel starts from this number' : 'The supply funnel ends with this number'}"><svg class="ic"><use href="#i-link"/></svg></span>` : ''}<span>${F.names[i]}</span></div>
         <div class="cnt num" title="${v.toLocaleString('en-US')}">${fN(v)}</div>
         ${p ? `<div class="pv num" title="Volume${m.partial ? ' per hour' : ''} compared with the previous period">prev ${fN(p[i])} · <b>${arrow(ch)} ${fP(Math.abs(ch))}</b></div>` : ''}
       </div>
-      <div class="fc" data-share="${share}" data-cls="${F.cls[i]}"><span class="pill num">${share < .01 && v ? '<1' : Math.round(share * 100)}%</span></div>`;
+      <div class="fc" data-share="${share}" data-cls="${F.cls[i]}" data-tip="${F.names[i]}|${fN(v)}|${fP(share)}|${last ? '' : `${fN(drops[i])} (${fP(v ? drops[i] / v : 0)})`}|${p ? fN(p[i]) : ''}"><span class="pill num">${share < .01 && v ? '<1' : Math.round(share * 100)}%</span></div>`;
     if (!last) {
       const d = drops[i], rate = v ? d / v : 0;
       let cmp = '';
       if (p) { const pr = p[i] ? (p[i] - p[i + 1]) / p[i] : 0, pts = (rate - pr) * 100; cmp = `<small class="num">was ${fP(pr)} · <b class="${Math.abs(pts) < .05 ? '' : pts > 0 ? 'bad' : 'good'}">${Math.abs(pts) < .05 ? 'no change' : `${arrow(pts)} ${Math.abs(pts).toFixed(1)} pts`}</b></small>`; }
       h += `<div class="dtx num${d ? '' : ' zero'}"><span class="rate${d && d === maxDrop && rate > .2 ? ' big' : ''}">${d ? `<b>↓ ${fP(rate)}</b><i> · </i><span>${fN(d)}<em> dropped</em></span>` : 'No drop'}</span>${cmp}</div>`;
     }
+    else h += `<div class="dtx zero"><span class="rate">End of the funnel</span></div>`;
     h += '</div>';
   });
   el.innerHTML = h;
@@ -662,32 +675,41 @@ function shape(key) {
 const GCOL = ['var(--g1)', 'var(--g2)', 'var(--g3)'];
 function drawWhy(key, m, c, p) {
   const F = FUN[key], i = S.sel[key], el = $('why-' + key);
+  if (i === c.length - 1) { el.innerHTML = `<div class="why-h"><h3>“${F.names[i]}” is the end of the funnel</h3></div><p class="empty">Select an earlier stage to see why requests dropped there.</p>`; return; }
   const d = c[i] - c[i + 1], rate = c[i] ? d / c[i] : 0;
   let h = `<div class="why-h"><h3>${d ? `Why ${fN(d)} dropped after “${F.names[i]}”` : `Nothing dropped after “${F.names[i]}”`}</h3><span class="num">${fP(rate)} of ${fN(c[i])}</span></div>`;
   let pd = 0;
   if (p) {
-    pd = p[i] - p[i + 1]; const pr = p[i] ? pd / p[i] : 0, pts = (rate - pr) * 100;
-    h += `<p class="why-c num">Previous period: ${fN(pd)} dropped, ${fP(pr)} of ${fN(p[i])}. Drop rate <b class="${Math.abs(pts) < .05 ? '' : pts > 0 ? 'bad' : 'good'}">${Math.abs(pts) < .05 ? 'did not change' : `${pts > 0 ? 'up' : 'down'} ${Math.abs(pts).toFixed(1)} pts`}</b>.</p>`;
+    pd = p[i] - p[i + 1]; const pr = p[i] ? pd / p[i] : 0, pts = (rate - pr) * 100, vol = pd ? chgVol(d, pd, m) : null;
+    h += `<p class="why-c num">Previous period: ${fN(pd)} dropped, ${fP(pr)} of ${fN(p[i])}.${vol === null ? '' : ` Dropped volume <b>${Math.abs(vol) < .0005 ? 'did not change' : `${vol > 0 ? 'up' : 'down'} ${fP(Math.abs(vol))}`}</b>${m.partial ? ' per hour' : ''},`} ${vol === null ? 'Drop' : 'drop'} rate <b class="${Math.abs(pts) < .05 ? '' : pts > 0 ? 'bad' : 'good'}">${Math.abs(pts) < .05 ? 'did not change' : `${pts > 0 ? 'up' : 'down'} ${Math.abs(pts).toFixed(1)} pts`}</b>.</p>`;
   }
-  if (!d) { el.innerHTML = h + `<p class="empty">Every request that reached this stage also reached the next one.</p>`; return; }
+  if (!d) { el.innerHTML = h + `<p class="empty">Nothing dropped at this stage. Every request that reached it also reached the next one.</p>`; return; }
   const rs = reasons(key + i, d, 0), prs = p ? reasons(key + i, pd, m.a) : null;
-  const groups = [...new Set(rs.map(r => r.group))];
-  if (groups.length > 1) {
-    const gs = groups.map(g => rs.filter(r => r.group === g).reduce((a, r) => a + r.n, 0));
-    h += `<div><div class="split">${gs.map((n, k) => `<i style="flex-grow:${n};background:${GCOL[k % 3]}"></i>`).join('')}</div></div>
-      <div class="lg">${groups.map((g, k) => `<span><i style="background:${GCOL[k % 3]}"></i>${g} <b class="num">${fP(gs[k] / d)}</b></span>`).join('')}</div>`;
-  } else {
-    h += `<div class="lg"><span><i style="background:${GCOL[0]}"></i>All in one group: <b>${groups[0]}</b></span></div>`;
-  }
-  h += `<ol class="rs${prs ? ' cmp' : ''}">${rs.map((r, k) => `<li><span class="rk num">${k + 1}</span>
-    <span class="rn">${r.name}<code>${r.code}</code></span>
+  const groups = [...new Set(rs.map(r => r.group))], gs = groups.map(g => rs.filter(r => r.group === g).reduce((a, r) => a + r.n, 0));
+  const R = 46, CIRC = 2 * Math.PI * R; let off = 0;
+  const arcs = gs.map((n, k) => { const len = n / d * CIRC, gap = groups.length > 1 ? 2 : 0, a = `<circle cx="60" cy="60" r="${R}" fill="none" stroke="${GCOL[k % 3]}" stroke-width="16" stroke-dasharray="${Math.max(len - gap, 1)} ${CIRC}" stroke-dashoffset="${-off}" transform="rotate(-90 60 60)"/>`; off += len; return a; }).join('');
+  h += `<div class="why-b"><div class="dn"><div class="donut"><svg viewBox="0 0 120 120" aria-hidden="true">${arcs}</svg><div class="donut-c"><b class="num">${fN(d)}</b><span>dropped</span></div></div>
+      <ul class="lg">${groups.map((g, k) => `<li><i style="background:${GCOL[k % 3]}"></i><span>${g}</span><b class="num">${fP(gs[k] / d)}</b></li>`).join('')}</ul></div>
+    <ol class="rs${prs ? ' cmp' : ''}">${rs.map((r, k) => `<li><span class="rk num">${k + 1}</span>
+    <span class="rn">${r.name}</span>
     <span class="rc num" title="${r.n.toLocaleString('en-US')}">${fN(r.n)}</span>${prs ? `<span class="rv num">prev ${fN(prs[k].n)}</span>` : ''}<span class="rp num">${fP(r.n / d)}</span>
-    <span class="rb"><i style="width:${r.n / d * 100}%;background:${GCOL[groups.indexOf(r.group) % 3]}"></i></span></li>`).join('')}</ol>`;
+    <span class="rcode"><code>${r.code}</code></span><span class="rb"><i style="width:${r.n / d * 100}%;background:${GCOL[groups.indexOf(r.group) % 3]}"></i></span></li>`).join('')}</ol></div>`;
   el.innerHTML = h;
 }
+/* hover on a bar: exact numbers, as in the current product */
+const tip = document.createElement('div'); tip.className = 'tip'; tip.hidden = true; document.body.appendChild(tip);
+document.addEventListener('mousemove', e => {
+  const fc = e.target.closest && e.target.closest('.fc'); if (!fc) { tip.hidden = true; return; }
+  const [name, cnt, share, drop, prev] = fc.dataset.tip.split('|'), key = fc.closest('.fn').classList.contains('sup') ? 'var(--sB)' : 'var(--dB)';
+  tip.innerHTML = `<b>${name}</b><span><i style="background:${key}"></i>Count: ${cnt}</span>${prev ? `<span><i style="background:var(--g3)"></i>Previous period: ${prev}</span>` : ''}<span><i style="background:var(--g2)"></i>Of top stage: ${share}</span><span><i style="background:var(--red)"></i>${drop ? 'Dropped: ' + drop : 'End of the funnel'}</span>`;
+  tip.hidden = false;
+  const r = fc.getBoundingClientRect(), w = tip.offsetWidth, hgt = tip.offsetHeight;
+  tip.style.left = Math.max(8, Math.min(innerWidth - w - 8, r.left + r.width / 2 - w / 2)) + 'px';
+  tip.style.top = (r.top - hgt - 6 < 8 ? r.bottom + 6 : r.top - hgt - 6) + 'px';
+});
 ['sup', 'dem'].forEach(key => {
   const el = $('fn-' + key);
-  const pick = e => { const s = e.target.closest('.step'); if (!s || s.classList.contains('last')) return; S.sel[key] = +s.dataset.i; S.auto[key] = false; render(); const n = el.querySelector(`.step[data-i="${S.sel[key]}"]`); if (e.type === 'keydown') n.focus(); };
+  const pick = e => { const s = e.target.closest('.step'); if (!s) return; S.sel[key] = +s.dataset.i; S.auto[key] = false; render(); const n = el.querySelector(`.step[data-i="${S.sel[key]}"]`); if (e.type === 'keydown') n.focus(); };
   el.addEventListener('click', pick);
   el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(e); } });
   el.addEventListener('mouseover', e => { if (e.target.closest('[data-shared]')) document.querySelectorAll('[data-shared]').forEach(n => n.classList.add('peer')); });
@@ -695,10 +717,6 @@ function drawWhy(key, m, c, p) {
 });
 
 /* ---------- small controls ---------- */
-document.querySelectorAll('.ibtn').forEach(b => b.addEventListener('click', () => {
-  const open = b.getAttribute('aria-expanded') !== 'true';
-  b.setAttribute('aria-expanded', open); $(b.getAttribute('aria-controls')).hidden = !open;
-}));
 document.querySelector('.dsp').addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return;
   document.querySelectorAll('.dsp button').forEach(x => x.setAttribute('aria-pressed', x === b));
